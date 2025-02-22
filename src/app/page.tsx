@@ -1,101 +1,181 @@
-import Image from "next/image";
+"use client";
+import { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { getWeatherData } from "@/actions/actions";
+import { WeatherData } from "@/types/weather";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { motion } from "framer-motion";
+import { Sun, Moon, CloudRain, Thermometer } from "lucide-react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [city, setCity] = useState("");
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [temperatureData, setTemperatureData] = useState<
+    { time: string; temp: number }[]
+  >([]);
+  const [humidityData, setHumidityData] = useState<
+    { time: string; humidity: number }[]
+  >([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const handleGetWeather = async () => {
+    setLoading(true);
+    setError("");
+    const result = await getWeatherData(city);
+    setLoading(false);
+    if (result.error) {
+      setError("Failed to fetch weather data. Please try again.");
+      setWeather(null);
+      setTemperatureData([]);
+      setHumidityData([]);
+    } else {
+      setWeather(result.data || null);
+      const tempData =
+        result.data?.list.map((item: any) => ({
+          time: item.dt_txt,
+          temp: item.main.temp,
+        })) || [];
+      const humData =
+        result.data?.list.map((item: any) => ({
+          time: item.dt_txt,
+          humidity: item.main.humidity,
+        })) || [];
+      setTemperatureData(tempData);
+      setHumidityData(humData);
+    }
+  };
+
+  return (
+    <motion.div
+      className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 bg-gradient-to-r from-purple-300 to-blue-300 text-black"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <header className="fixed top-0 left-0 right-0 p-4 shadow-md z-10 bg-white">
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl font-bold">Weather App</h1>
+          <div className="flex flex-row gap-4 w-full max-w-md">
+            <Input
+              placeholder="Enter city name"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <Button onClick={handleGetWeather} disabled={loading}>
+              {loading ? "Loading..." : "Get Weather"}
+            </Button>
+          </div>
+        </div>
+      </header>
+      <main className="flex flex-col items-center gap-4 w-full">
+        <div className="flex flex-col items-center gap-4 w-full mt-16">
+          {error && <p className="text-red-500">{error}</p>}
+          {weather && (
+            <motion.div
+              className="flex flex-col gap-4 w-full max-w-4xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="p-4 shadow-md rounded-md bg-white">
+                <h2 className="text-2xl font-bold">{weather.city.name}</h2>
+                <p className="text-lg flex items-center gap-2">
+                  <Thermometer /> Temperature: {weather.list[0].main.temp}°C
+                </p>
+                <p className="text-lg flex items-center gap-2">
+                  <CloudRain /> Weather:{" "}
+                  {weather.list[0].weather[0].description}
+                </p>
+              </div>
+              <div className="p-4 shadow-md rounded-md bg-white">
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={temperatureData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="time"
+                      tickFormatter={(time) =>
+                        new Date(time).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          hour: "numeric",
+                        })
+                      }
+                    />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="temp"
+                      stroke="url(#tempGradient)"
+                    />
+                    <defs>
+                      <linearGradient
+                        id="tempGradient"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="0"
+                      >
+                        <stop offset="0%" stopColor="#8884d8" />
+                        <stop offset="100%" stopColor="#82ca9d" />
+                      </linearGradient>
+                    </defs>
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="p-4 shadow-md rounded-md bg-white">
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={humidityData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="time"
+                      tickFormatter={(time) =>
+                        new Date(time).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          hour: "numeric",
+                        })
+                      }
+                    />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="humidity"
+                      stroke="url(#humidityGradient)"
+                    />
+                    <defs>
+                      <linearGradient
+                        id="humidityGradient"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="0"
+                      >
+                        <stop offset="0%" stopColor="#8884d8" />
+                        <stop offset="100%" stopColor="#82ca9d" />
+                      </linearGradient>
+                    </defs>
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </motion.div>
+          )}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </motion.div>
   );
 }
