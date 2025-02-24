@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getWeatherData } from "@/actions/actions";
@@ -15,7 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { motion } from "framer-motion";
-import { Sun, Moon, CloudRain, Thermometer } from "lucide-react";
+import { CloudRain, Thermometer } from "lucide-react";
 
 export default function Home() {
   const [city, setCity] = useState("");
