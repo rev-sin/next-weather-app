@@ -96,3 +96,35 @@ export async function getWeatherData(city: string): Promise<{
     };
   }
 }
+
+export async function getWeatherDataByCoords(lat: number, lon: number): Promise<{
+  data?: WeatherData;
+  error?: string;
+}> {
+  try {
+    if (!lat || !lon) {
+      return { error: "Latitude and longitude are required" };
+    }
+
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.OPENWEATHERMAP_API_KEY}`
+    );
+
+    if (!res.ok) {
+      throw new Error("Location not found");
+    }
+
+    const rawData = await res.json();
+
+    const data = weatherSchema.parse(rawData);
+    return { data };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { error: "Invalid weather data received" };
+    }
+    return {
+      error:
+        error instanceof Error ? error.message : "Failed to fetch weather data",
+    };
+  }
+}
