@@ -16,7 +16,7 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 import { CloudRain, Thermometer } from "lucide-react";
-import Link from "next/link"; // Import Link from next/link
+import Link from "next/link";
 
 export default function Home() {
   const [city, setCity] = useState("");
