@@ -16,7 +16,6 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 import { CloudRain, Thermometer } from "lucide-react";
-import Link from "next/link";
 
 export default function Weather() {
   const [city, setCity] = useState("");
@@ -64,38 +63,22 @@ export default function Weather() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <header className="fixed top-0 left-0 right-0 p-4 shadow-md z-10 bg-white">
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold">Weather App</h1>
-          <form
-            className="flex flex-row gap-4 w-full max-w-md"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleGetWeather();
-            }}
-          >
-            <Input
-              placeholder="Enter city name"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
-            <Button type="submit" disabled={loading}>
-              {loading ? "Loading..." : "Get Weather"}
-            </Button>
-          </form>
-          <nav className="flex gap-4">
-            <Link href="/" className="text-blue-500 hover:underline">
-              Home
-            </Link>
-            <Link href="/about" className="text-blue-500 hover:underline">
-              About
-            </Link>
-            <Link href="/contact" className="text-blue-500 hover:underline">
-              Contact
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <form
+        className="flex flex-row gap-4 w-full max-w-md"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleGetWeather();
+        }}
+      >
+        <Input
+          placeholder="Enter city name"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <Button type="submit" disabled={loading}>
+          {loading ? "Loading..." : "Get Weather"}
+        </Button>
+      </form>
       <main className="flex flex-col items-center gap-4 w-full mt-16">
         {error && <p className="text-red-500">{error}</p>}
         {weather && (
@@ -111,8 +94,7 @@ export default function Weather() {
                 <Thermometer /> Temperature: {weather.list[0].main.temp}°C
               </p>
               <p className="text-lg flex items-center gap-2">
-                <CloudRain /> Weather:{" "}
-                {weather.list[0].weather[0].description}
+                <CloudRain /> Weather: {weather.list[0].weather[0].description}
               </p>
             </div>
             <div className="p-4 shadow-md rounded-md bg-white">

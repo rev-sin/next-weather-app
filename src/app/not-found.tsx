@@ -1,8 +1,7 @@
-"use client"
+"use client";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-
 
 export default function NotFoundPage() {
   return (
@@ -19,7 +18,7 @@ export default function NotFoundPage() {
           URL or go back to the homepage.
         </p>
         <Link href="/">
-          <a className="text-blue-500 underline">Go to Homepage</a>
+          <p className="text-blue-500 underline">Go to Homepage</p>
         </Link>
       </main>
     </motion.div>
