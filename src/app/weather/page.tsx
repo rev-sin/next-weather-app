@@ -96,103 +96,101 @@ export default function Weather() {
           </nav>
         </div>
       </header>
-      <main className="flex flex-col items-center gap-4 w-full">
-        <div className="flex flex-col items-center gap-4 w-full mt-16">
-          {error && <p className="text-red-500">{error}</p>}
-          {weather && (
-            <motion.div
-              className="flex flex-col gap-4 w-full max-w-4xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="p-4 shadow-md rounded-md bg-white">
-                <h2 className="text-2xl font-bold">{weather.city.name}</h2>
-                <p className="text-lg flex items-center gap-2">
-                  <Thermometer /> Temperature: {weather.list[0].main.temp}°C
-                </p>
-                <p className="text-lg flex items-center gap-2">
-                  <CloudRain /> Weather:{" "}
-                  {weather.list[0].weather[0].description}
-                </p>
-              </div>
-              <div className="p-4 shadow-md rounded-md bg-white">
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={temperatureData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="time"
-                      tickFormatter={(time) =>
-                        new Date(time).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          hour: "numeric",
-                        })
-                      }
-                    />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="temp"
-                      stroke="url(#tempGradient)"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="tempGradient"
-                        x1="0"
-                        y1="0"
-                        x2="1"
-                        y2="0"
-                      >
-                        <stop offset="0%" stopColor="#8884d8" />
-                        <stop offset="100%" stopColor="#82ca9d" />
-                      </linearGradient>
-                    </defs>
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="p-4 shadow-md rounded-md bg-white">
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={humidityData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="time"
-                      tickFormatter={(time) =>
-                        new Date(time).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          hour: "numeric",
-                        })
-                      }
-                    />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="humidity"
-                      stroke="url(#humidityGradient)"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="humidityGradient"
-                        x1="0"
-                        y1="0"
-                        x2="1"
-                        y2="0"
-                      >
-                        <stop offset="0%" stopColor="#8884d8" />
-                        <stop offset="100%" stopColor="#82ca9d" />
-                      </linearGradient>
-                    </defs>
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </motion.div>
-          )}
-        </div>
+      <main className="flex flex-col items-center gap-4 w-full mt-16">
+        {error && <p className="text-red-500">{error}</p>}
+        {weather && (
+          <motion.div
+            className="flex flex-col gap-4 w-full max-w-4xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="p-4 shadow-md rounded-md bg-white">
+              <h2 className="text-2xl font-bold">{weather.city.name}</h2>
+              <p className="text-lg flex items-center gap-2">
+                <Thermometer /> Temperature: {weather.list[0].main.temp}°C
+              </p>
+              <p className="text-lg flex items-center gap-2">
+                <CloudRain /> Weather:{" "}
+                {weather.list[0].weather[0].description}
+              </p>
+            </div>
+            <div className="p-4 shadow-md rounded-md bg-white">
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={temperatureData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="time"
+                    tickFormatter={(time) =>
+                      new Date(time).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        hour: "numeric",
+                      })
+                    }
+                  />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="temp"
+                    stroke="url(#tempGradient)"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="tempGradient"
+                      x1="0"
+                      y1="0"
+                      x2="1"
+                      y2="0"
+                    >
+                      <stop offset="0%" stopColor="#8884d8" />
+                      <stop offset="100%" stopColor="#82ca9d" />
+                    </linearGradient>
+                  </defs>
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="p-4 shadow-md rounded-md bg-white">
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={humidityData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="time"
+                    tickFormatter={(time) =>
+                      new Date(time).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        hour: "numeric",
+                      })
+                    }
+                  />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="humidity"
+                    stroke="url(#humidityGradient)"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="humidityGradient"
+                      x1="0"
+                      y1="0"
+                      x2="1"
+                      y2="0"
+                    >
+                      <stop offset="0%" stopColor="#8884d8" />
+                      <stop offset="100%" stopColor="#82ca9d" />
+                    </linearGradient>
+                  </defs>
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+        )}
       </main>
     </motion.div>
   );

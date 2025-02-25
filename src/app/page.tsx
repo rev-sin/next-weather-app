@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "next/link";
 import { motion } from "framer-motion";
+import Header from "@/components/ui/header";
 
 export default function HomePage() {
   return (
@@ -11,22 +11,7 @@ export default function HomePage() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <header className="fixed top-0 left-0 right-0 p-4 shadow-md z-10 bg-white">
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold">Weather App</h1>
-          <nav className="flex gap-4">
-            <Link href="/weather" className="text-blue-500 hover:underline">
-              Weather
-            </Link>
-            <Link href="/about" className="text-blue-500 hover:underline">
-              About
-            </Link>
-            <Link href="/contact" className="text-blue-500 hover:underline">
-              Contact
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
       <main className="flex flex-col items-center gap-4 w-full mt-16">
         <h2 className="text-4xl font-bold">Welcome to the Weather App</h2>
         <p className="text-lg text-center">
