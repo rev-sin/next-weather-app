@@ -1,28 +1,53 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/ui/header";
 import Image from "next/image";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 
 const teamMembers = [
   {
-    name: "John Doe",
-    role: "Frontend Developer",
-    imageUrl: "/images/",
+    name: "Koushik Reddy Chittibala",
+    role: "Tester",
+    rollno: "CB.EN.U4CSE22108",
+    imageUrl: "/images/koushik.jpg",
   },
   {
-    name: "Jane Smith",
-    role: "Backend Developer",
-    imageUrl: "/images/jane.jpg",
+    name: "Jishnu Hari",
+    role: "Developer",
+    rollno: "CB.EN.U4CSE22122",
+    imageUrl: "/images/jishnu.jpg",
   },
   {
-    name: "Alice Johnson",
-    role: "UI/UX Designer",
-    imageUrl: "/images/alice.jpg",
+    name: "Lucky Goyal",
+    role: "Developer",
+    rollno: "CB.EN.U4CSE22130",
+    imageUrl: "/images/lucky.jpg",
+  },
+  {
+    name: "Priyadharshini",
+    role: "Tester",
+    rollno: "CB.EN.U4CSE22147",
+    imageUrl: "/images/priya.jpg",
+  },
+  {
+    name: "Revanth Singothu",
+    role: "Scrum Master",
+    rollno: "CB.EN.U4CSE22149",
+    imageUrl: "/public/revanth.svg",
   },
 ];
 
 export default function TeamPage() {
+  const [selectedMember, setSelectedMember] = useState(teamMembers[0]);
+
   return (
     <motion.div
       className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 bg-gradient-to-r from-purple-300 to-pink-300 text-black"
@@ -32,20 +57,61 @@ export default function TeamPage() {
     >
       <Header />
       <main className="flex flex-col items-center gap-4 w-full mt-16">
-        <h2 className="text-4xl font-bold">Meet Our Team</h2>
-        <div className="flex flex-wrap justify-center gap-8 mt-8">
+        <nav className="flex gap-4 mb-8">
           {teamMembers.map((member) => (
-            <div key={member.name} className="flex flex-col items-center">
-              <Image
-                src={member.imageUrl}
-                alt={member.name}
-                className="w-32 h-32 rounded-full object-cover"
-              />
-              <h3 className="mt-4 text-2xl font-semibold">{member.name}</h3>
-              <p className="text-lg">{member.role}</p>
-            </div>
+            <motion.div
+              key={member.name}
+              className={`cursor-pointer p-4 rounded-lg transition-colors duration-300 ease-in-out ${
+                selectedMember.name === member.name
+                  ? "bg-purple-200"
+                  : "hover:bg-purple-100"
+              }`}
+              onMouseEnter={() => setSelectedMember(member)}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              {member.name}
+            </motion.div>
           ))}
-        </div>
+        </nav>
+        <motion.section
+          className="w-full sm:w-3/4 flex justify-center"
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 100 }}
+        >
+          <motion.div
+            className="w-full max-w-md"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <Card className="shadow-lg">
+              <CardHeader className="flex flex-col items-center">
+                <div className="overflow-hidden rounded-full w-40 h-40 mb-4">
+                  <Image
+                    src={selectedMember.imageUrl}
+                    alt={selectedMember.name}
+                    className="object-cover w-full h-full"
+                    width={160}
+                    height={160}
+                  />
+                </div>
+                <hr className="w-full border-t border-gray-300 my-4" />
+              </CardHeader>
+              <CardContent className="text-center">
+                <CardTitle className="text-2xl font-bold">
+                  {selectedMember.name}
+                </CardTitle>
+                <CardDescription className="text-sm text-gray-600">
+                  {selectedMember.role}
+                </CardDescription>
+                <CardDescription className="text-sm text-gray-600">
+                  {selectedMember.rollno}
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.section>
       </main>
     </motion.div>
   );

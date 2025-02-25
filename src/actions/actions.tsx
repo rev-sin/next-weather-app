@@ -97,7 +97,10 @@ export async function getWeatherData(city: string): Promise<{
   }
 }
 
-export async function getWeatherDataByCoords(lat: number, lon: number): Promise<{
+export async function getWeatherDataByCoords(
+  lat: number,
+  lon: number
+): Promise<{
   data?: WeatherData;
   error?: string;
 }> {
