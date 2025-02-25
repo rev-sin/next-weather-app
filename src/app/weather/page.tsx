@@ -51,13 +51,13 @@ export default function Weather() {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 bg-gradient-to-r from-purple-300 to-blue-300 text-black"
+      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-gradient-to-r from-purple-300 to-blue-300 text-black"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-row w-full max-w-6xl gap-8">
-        <div className="flex flex-col w-1/3 gap-8">
+      <div className="flex flex-col w-full max-w-6xl gap-8 items-start">
+        <div className="flex flex-col w-full gap-8">
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Weather Search</CardTitle>
@@ -120,7 +120,7 @@ export default function Weather() {
             </Card>
           )}
         </div>
-        <div className="flex flex-col w-2/3 gap-8">
+        <div className="flex flex-col w-full sm:w-2/3 gap-8">
           {weather && (
             <Card>
               <CardHeader>
