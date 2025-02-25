@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 import { CloudRain, Thermometer } from "lucide-react";
+import Link from "next/link"; // Import Link from next/link
 
 export default function Home() {
   const [city, setCity] = useState("");
@@ -66,16 +67,33 @@ export default function Home() {
       <header className="fixed top-0 left-0 right-0 p-4 shadow-md z-10 bg-white">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold">Weather App</h1>
-          <div className="flex flex-row gap-4 w-full max-w-md">
+          <form
+            className="flex flex-row gap-4 w-full max-w-md"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleGetWeather();
+            }}
+          >
             <Input
               placeholder="Enter city name"
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
-            <Button onClick={handleGetWeather} disabled={loading}>
+            <Button type="submit" disabled={loading}>
               {loading ? "Loading..." : "Get Weather"}
             </Button>
-          </div>
+          </form>
+          <nav className="flex gap-4">
+            <Link href="/" className="text-blue-500 hover:underline">
+              Home
+            </Link>
+            <Link href="/about" className="text-blue-500 hover:underline">
+              About
+            </Link>
+            <Link href="/contact" className="text-blue-500 hover:underline">
+              Contact
+            </Link>
+          </nav>
         </div>
       </header>
       <main className="flex flex-col items-center gap-4 w-full">
