@@ -4,17 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getWeatherData } from "@/actions/actions";
 import { WeatherData } from "@/types/weather";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import { motion } from "framer-motion";
+import TChart from "@/components/ui/TChart";
+import HChart from "@/components/ui/HChart";
+
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 
 export default function Weather() {
@@ -64,145 +57,101 @@ export default function Weather() {
       transition={{ duration: 0.5 }}
     >
       <div className="flex flex-row w-full max-w-6xl gap-8">
-        <Card className="w-1/3">
-          <CardHeader>
-            <CardTitle>Weather Search</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form
-              className="flex flex-col gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleGetWeather();
-              }}
-            >
-              <Input
-                placeholder="Enter city name"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-              <Button type="submit" disabled={loading}>
-                {loading ? "Loading..." : "Get Weather"}
-              </Button>
-              {error && <p className="text-red-500">{error}</p>}
-            </form>
-          </CardContent>
-        </Card>
-        {weather && (
-          <motion.div
-            className="flex flex-col gap-4 w-full mt-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="p-4 shadow-md rounded-md bg-white">
-              <h2 className="text-2xl font-bold">{weather.city.name}</h2>
-              <p className="text-lg flex items-center gap-2">
-                Temperature: {weather.list[0].main.temp}°C
-              </p>
-              <p className="text-lg flex items-center gap-2">
-                Weather: {weather.list[0].weather[0].description}
-              </p>
-              <p className="text-lg">
-                Humidity: {weather.list[0].main.humidity}%
-              </p>
-              <p className="text-lg">
-                Wind Speed: {weather.list[0].wind.speed} m/s
-              </p>
-              <p className="text-lg">
-                Pressure: {weather.list[0].main.pressure} hPa
-              </p>
-              <p className="text-lg">
-                Visibility: {weather.list[0].visibility} meters
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </div>
-      <div className="w-2/3">
-        {weather && (
-          <motion.div
-            className="flex flex-col gap-4 w-full"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="p-4 shadow-md rounded-md bg-white">
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={temperatureData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="time"
-                    tickFormatter={(time) =>
-                      new Date(time).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        hour: "numeric",
-                      })
-                    }
-                  />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="temp"
-                    stroke="url(#tempGradient)"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="tempGradient"
-                      x1="0"
-                      y1="0"
-                      x2="1"
-                      y2="0"
-                    >
-                      <stop offset="0%" stopColor="#8884d8" />
-                      <stop offset="100%" stopColor="#82ca9d" />
-                    </linearGradient>
-                  </defs>
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="p-4 shadow-md rounded-md bg-white">
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={humidityData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="time"
-                    tickFormatter={(time) =>
-                      new Date(time).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        hour: "numeric",
-                      })
-                    }
-                  />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="humidity"
-                    stroke="url(#humidityGradient)"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="humidityGradient"
-                      x1="0"
-                      y1="0"
-                      x2="1"
-                      y2="0"
-                    >
-                      <stop offset="0%" stopColor="#8884d8" />
-                      <stop offset="100%" stopColor="#82ca9d" />
-                    </linearGradient>
-                  </defs>
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </motion.div>
-        )}
+        <div className="flex flex-col w-1/3 gap-8">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Weather Search</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleGetWeather();
+                }}
+              >
+                <Input
+                  placeholder="Enter city name"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Loading..." : "Get Weather"}
+                </Button>
+                {error && <p className="text-red-500">{error}</p>}
+              </form>
+            </CardContent>
+          </Card>
+          {weather && (
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>Weather Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <motion.div
+                  className="flex flex-col gap-4 w-full mt-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="p-4 shadow-md rounded-md bg-white">
+                    <h2 className="text-2xl font-bold">{weather.city.name}</h2>
+                    <p className="text-lg flex items-center gap-2">
+                      Temperature: {weather.list[0].main.temp}°C
+                    </p>
+                    <p className="text-lg flex items-center gap-2">
+                      Weather: {weather.list[0].weather[0].description}
+                    </p>
+                    <p className="text-lg">
+                      Humidity: {weather.list[0].main.humidity}%
+                    </p>
+                    <p className="text-lg">
+                      Wind Speed: {weather.list[0].wind.speed} m/s
+                    </p>
+                    <p className="text-lg">
+                      Pressure: {weather.list[0].main.pressure} hPa
+                    </p>
+                    <p className="text-lg">
+                      Visibility: {weather.list[0].visibility} meters
+                    </p>
+                  </div>
+                </motion.div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+        <div className="flex flex-col w-2/3 gap-8">
+          {weather && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Weather Charts</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <motion.div
+                  className="flex flex-col gap-4 w-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="p-4 shadow-md rounded-md bg-white">
+                    <TChart
+                      data={temperatureData}
+                      dataKey="temp"
+                      strokeColor="#8884d8"
+                      gradientId="tempGradient"
+                    />
+                    <HChart
+                      data={humidityData}
+                      dataKey="humidity"
+                      strokeColor="#8884d8"
+                      gradientId="humidityGradient"
+                    />
+                  </div>
+                </motion.div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
     </motion.div>
   );
