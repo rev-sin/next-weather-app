@@ -56,100 +56,112 @@ export default function Weather() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col w-full max-w-6xl gap-8 items-start">
-        <div className="flex flex-col w-full gap-8">
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>Weather Search</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form
-                className="flex flex-col gap-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleGetWeather();
-                }}
-              >
-                <Input
-                  placeholder="Enter city name"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Loading..." : "Get Weather"}
-                </Button>
-                {error && <p className="text-red-500">{error}</p>}
-              </form>
-            </CardContent>
-          </Card>
-          {weather && (
+      <div className="flex flex-col w-full max-w-6xl gap-8 items-start mt-8">
+        <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
+          <div className="flex flex-col w-full lg:w-1/2 gap-8 mt-8">
             <Card className="w-full">
               <CardHeader>
-                <CardTitle>Weather Details</CardTitle>
+                <CardTitle>Weather Search</CardTitle>
               </CardHeader>
               <CardContent>
-                <motion.div
-                  className="flex flex-col gap-4 w-full mt-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
+                <form
+                  className="flex flex-col gap-4"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleGetWeather();
+                  }}
                 >
-                  <div className="p-4 shadow-md rounded-md bg-white">
-                    <h2 className="text-2xl font-bold">{weather.city.name}</h2>
-                    <p className="text-lg flex items-center gap-2">
-                      Temperature: {weather.list[0].main.temp}°C
-                    </p>
-                    <p className="text-lg flex items-center gap-2">
-                      Weather: {weather.list[0].weather[0].description}
-                    </p>
-                    <p className="text-lg">
-                      Humidity: {weather.list[0].main.humidity}%
-                    </p>
-                    <p className="text-lg">
-                      Wind Speed: {weather.list[0].wind.speed} m/s
-                    </p>
-                    <p className="text-lg">
-                      Pressure: {weather.list[0].main.pressure} hPa
-                    </p>
-                    <p className="text-lg">
-                      Visibility: {weather.list[0].visibility} meters
-                    </p>
-                  </div>
-                </motion.div>
+                  <Input
+                    placeholder="Enter city name"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full sm:w-auto"
+                  >
+                    {loading ? "Loading..." : "Get Weather"}
+                  </Button>
+                  {error && <p className="text-red-500 text-center">{error}</p>}
+                </form>
               </CardContent>
             </Card>
-          )}
-        </div>
-        <div className="flex flex-col w-full sm:w-2/3 gap-8">
+            {weather && (
+              <Card className="w-full">
+                <CardHeader>
+                  <CardTitle>Weather Details</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <motion.div
+                    className="flex flex-col gap-4 w-full mt-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="p-4 shadow-md rounded-md bg-white">
+                      <h2 className="text-2xl font-bold">
+                        {weather.city.name}
+                      </h2>
+                      <p className="text-lg flex items-center gap-2">
+                        Temperature: {weather.list[0].main.temp}°C
+                      </p>
+                      <p className="text-lg flex items-center gap-2">
+                        Weather: {weather.list[0].weather[0].description}
+                      </p>
+                      <p className="text-lg">
+                        Humidity: {weather.list[0].main.humidity}%
+                      </p>
+                      <p className="text-lg">
+                        Wind Speed: {weather.list[0].wind.speed} m/s
+                      </p>
+                      <p className="text-lg">
+                        Pressure: {weather.list[0].main.pressure} hPa
+                      </p>
+                      <p className="text-lg">
+                        Visibility: {weather.list[0].visibility} meters
+                      </p>
+                    </div>
+                  </motion.div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
           {weather && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Weather Charts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <motion.div
-                  className="flex flex-col gap-4 w-full"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="p-4 shadow-md rounded-md bg-white">
-                    <TChart
-                      data={temperatureData}
-                      dataKey="temp"
-                      strokeColor="#8884d8"
-                      gradientId="tempGradient"
-                    />
-                    <HChart
-                      data={humidityData}
-                      dataKey="humidity"
-                      strokeColor="#8884d8"
-                      gradientId="humidityGradient"
-                    />
-                  </div>
-                </motion.div>
-              </CardContent>
-            </Card>
+            <div className="flex flex-col w-full lg:w-1/2 gap-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Weather Charts</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <motion.div
+                    className="flex flex-col gap-4 w-full"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="p-4 shadow-md rounded-md bg-white">
+                      <div className="w-full">
+                        <TChart
+                          data={temperatureData}
+                          dataKey="temp"
+                          strokeColor="#8884d8"
+                          gradientId="tempGradient"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <HChart
+                          data={humidityData}
+                          dataKey="humidity"
+                          strokeColor="#8884d8"
+                          gradientId="humidityGradient"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                </CardContent>
+              </Card>
+            </div>
           )}
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/ui/header";
 import Image from "next/image";
@@ -41,15 +41,19 @@ const teamMembers = [
     name: "Revanth Singothu",
     role: "Scrum Master",
     rollno: "CB.EN.U4CSE22149",
-    imageUrl: "/public/revanth.svg",
+    imageUrl: "/images/revanth.jpg",
   },
 ];
 
 export default function TeamPage() {
   const [selectedMember, setSelectedMember] = useState(teamMembers[0]);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const resetInterval = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    intervalRef.current = setInterval(() => {
       setSelectedMember((prevMember) => {
         const currentIndex = teamMembers.findIndex(
           (member) => member.name === prevMember.name
@@ -58,9 +62,21 @@ export default function TeamPage() {
         return teamMembers[nextIndex];
       });
     }, 5000);
+  };
 
-    return () => clearInterval(interval);
+  useEffect(() => {
+    resetInterval();
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, []);
+
+  const handleMemberClick = (member: (typeof teamMembers)[0]) => {
+    setSelectedMember(member);
+    resetInterval();
+  };
 
   return (
     <motion.div
@@ -80,7 +96,7 @@ export default function TeamPage() {
                   ? "bg-purple-200"
                   : "hover:bg-purple-100"
               }`}
-              onClick={() => setSelectedMember(member)}
+              onClick={() => handleMemberClick(member)}
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
