@@ -21,6 +21,9 @@ export default function Weather() {
   const [humidityData, setHumidityData] = useState<
     { time: string; humidity: number }[]
   >([]);
+  const [chartType, setChartType] = useState<"temperature" | "humidity">(
+    "temperature"
+  );
 
   const handleGetWeather = async () => {
     setLoading(true);
@@ -141,21 +144,44 @@ export default function Weather() {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="p-4 shadow-md rounded-md bg-white">
-                      <div className="w-full">
-                        <TChart
-                          data={temperatureData}
-                          dataKey="temp"
-                          strokeColor="#8884d8"
-                          gradientId="tempGradient"
-                        />
+                      <div className="flex justify-center gap-4 mb-4">
+                        <Button
+                          onClick={() => setChartType("temperature")}
+                          className={
+                            chartType === "temperature"
+                              ? "bg-blue-500 text-white"
+                              : ""
+                          }
+                        >
+                          Temperature
+                        </Button>
+                        <Button
+                          onClick={() => setChartType("humidity")}
+                          className={
+                            chartType === "humidity"
+                              ? "bg-blue-500 text-white"
+                              : ""
+                          }
+                        >
+                          Humidity
+                        </Button>
                       </div>
                       <div className="w-full">
-                        <HChart
-                          data={humidityData}
-                          dataKey="humidity"
-                          strokeColor="#8884d8"
-                          gradientId="humidityGradient"
-                        />
+                        {chartType === "temperature" ? (
+                          <TChart
+                            data={temperatureData}
+                            dataKey="temp"
+                            strokeColor="#8884d8"
+                            gradientId="tempGradient"
+                          />
+                        ) : (
+                          <HChart
+                            data={humidityData}
+                            dataKey="humidity"
+                            strokeColor="#8884d8"
+                            gradientId="humidityGradient"
+                          />
+                        )}
                       </div>
                     </div>
                   </motion.div>
