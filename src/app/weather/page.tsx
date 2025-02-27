@@ -60,10 +60,12 @@ export default function Weather() {
     >
       <div className="flex flex-col w-full max-w-6xl gap-8 items-center mt-8">
         <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
-          <div className="flex flex-col w-full lg:w-1/2 gap-8">
+          <div className="flex flex-col w-full mt-8 gap-8">
             <Card className="w-full shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl sm:text-3xl font-semibold">Weather Search</CardTitle>
+                <CardTitle className="text-2xl sm:text-3xl font-semibold">
+                  Weather Search
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <form
@@ -92,7 +94,9 @@ export default function Weather() {
             {weather && (
               <Card className="w-full shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl sm:text-3xl font-semibold">Weather Details</CardTitle>
+                  <CardTitle className="text-2xl sm:text-3xl font-semibold">
+                    Weather Details
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <motion.div
@@ -133,7 +137,9 @@ export default function Weather() {
             <div className="flex flex-col w-full lg:w-3/4 gap-8">
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-2xl sm:text-3xl font-semibold">Weather Charts</CardTitle>
+                  <CardTitle className="text-2xl sm:text-3xl font-semibold">
+                    Weather Charts
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <motion.div

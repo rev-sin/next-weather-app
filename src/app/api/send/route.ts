@@ -18,7 +18,7 @@ export async function POST(request: Request) {
             from: 'alerts-noreply@nextweather.tech',
             to: [email.emailAddress],
             subject: 'Hello world',
-            react: await EmailTemplate({ firstName: 'John' }),
+            react: await EmailTemplate({ firstName: user.firstName || '' }),
         });
 
         if (error) {
