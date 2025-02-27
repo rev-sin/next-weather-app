@@ -80,7 +80,7 @@ export default function TeamPage() {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-gradient-to-r from-purple-300 to-pink-300 text-black"
+      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -129,13 +129,13 @@ export default function TeamPage() {
                 <hr className="w-full border-t border-gray-300 my-4" />
               </CardHeader>
               <CardContent className="text-center">
-                <CardTitle className="text-xl sm:text-2xl font-bold">
+                <CardTitle className="text-2xl sm:text-3xl font-bold">
                   {selectedMember.name}
                 </CardTitle>
-                <CardDescription className="text-sm text-gray-600">
+                <CardDescription className="text-lg text-gray-200">
                   {selectedMember.role}
                 </CardDescription>
-                <CardDescription className="text-sm text-gray-600">
+                <CardDescription className="text-lg text-gray-600">
                   {selectedMember.rollno}
                 </CardDescription>
               </CardContent>

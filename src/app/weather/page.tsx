@@ -54,7 +54,7 @@ export default function Weather() {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-gradient-to-r from-purple-300 to-blue-300 text-black"
+      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -62,9 +62,9 @@ export default function Weather() {
       <div className="flex flex-col w-full max-w-6xl gap-8 items-start mt-8">
         <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
           <div className="flex flex-col w-full lg:w-1/2 gap-8 mt-8">
-            <Card className="w-full">
+            <Card className="w-full shadow-lg">
               <CardHeader>
-                <CardTitle>Weather Search</CardTitle>
+                <CardTitle className="text-2xl sm:text-3xl font-semibold">Weather Search</CardTitle>
               </CardHeader>
               <CardContent>
                 <form
@@ -82,7 +82,7 @@ export default function Weather() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
                   >
                     {loading ? "Loading..." : "Get Weather"}
                   </Button>
@@ -91,9 +91,9 @@ export default function Weather() {
               </CardContent>
             </Card>
             {weather && (
-              <Card className="w-full">
+              <Card className="w-full shadow-lg">
                 <CardHeader>
-                  <CardTitle>Weather Details</CardTitle>
+                  <CardTitle className="text-2xl sm:text-3xl font-semibold">Weather Details</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <motion.div
@@ -102,7 +102,7 @@ export default function Weather() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <div className="p-4 shadow-md rounded-md bg-white">
+                    <div className="p-4 shadow-md rounded-md bg-white text-black">
                       <h2 className="text-2xl font-bold">
                         {weather.city.name}
                       </h2>
@@ -132,9 +132,9 @@ export default function Weather() {
           </div>
           {weather && (
             <div className="flex flex-col w-full lg:w-1/2 gap-8">
-              <Card>
+              <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle>Weather Charts</CardTitle>
+                  <CardTitle className="text-2xl sm:text-3xl font-semibold">Weather Charts</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <motion.div
@@ -143,7 +143,7 @@ export default function Weather() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <div className="p-4 shadow-md rounded-md bg-white">
+                    <div className="p-4 shadow-md rounded-md bg-white text-black">
                       <div className="flex justify-center gap-4 mb-4">
                         <Button
                           onClick={() => setChartType("temperature")}

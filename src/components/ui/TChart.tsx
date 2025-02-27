@@ -24,14 +24,12 @@ interface ChartProps {
   data: { time: string; temp: number }[];
   dataKey: string;
   strokeColor: string;
-  gradientId: string;
 }
 
 const TChart: React.FC<ChartProps> = ({
   data,
   dataKey,
   strokeColor,
-  gradientId,
 }) => {
   const [isLineChart, setIsLineChart] = useState(true);
   const [intervals, setIntervals] = useState(3);
@@ -54,13 +52,13 @@ const TChart: React.FC<ChartProps> = ({
   const filteredData = data.slice(startIndex, startIndex + intervals);
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
+    <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto", background: "#fff", color: "black", borderRadius: "10px" }}>
       <div style={{ display: "flex", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
-        <Button onClick={() => setIsLineChart(!isLineChart)}>
+        <Button onClick={() => setIsLineChart(!isLineChart)} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
           {isLineChart ? "Switch to Bar Chart" : "Switch to Line Chart"}
         </Button>
         <Select onValueChange={(value) => setIntervals(Number(value))} value={intervals.toString()}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
             <SelectValue placeholder="Select intervals" />
           </SelectTrigger>
           <SelectContent>
@@ -69,16 +67,16 @@ const TChart: React.FC<ChartProps> = ({
             <SelectItem value="10">10 Intervals</SelectItem>
           </SelectContent>
         </Select>
-        <Button onClick={() => setShowLegend(!showLegend)}>
+        <Button onClick={() => setShowLegend(!showLegend)} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
           {showLegend ? "Hide Legend" : "Show Legend"}
         </Button>
-        <Button onClick={() => setShowGrid(!showGrid)}>
+        <Button onClick={() => setShowGrid(!showGrid)} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
           {showGrid ? "Hide Grid" : "Show Grid"}
         </Button>
-        <Button onClick={handlePrev} disabled={startIndex === 0}>
+        <Button onClick={handlePrev} disabled={startIndex === 0} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
           Previous
         </Button>
-        <Button onClick={handleNext} disabled={startIndex + intervals >= data.length}>
+        <Button onClick={handleNext} disabled={startIndex + intervals >= data.length} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
           Next
         </Button>
       </div>
@@ -102,14 +100,8 @@ const TChart: React.FC<ChartProps> = ({
             <Line
               type="monotone"
               dataKey={dataKey}
-              stroke={`url(#${gradientId})`}
+              stroke={strokeColor}
             />
-            <defs>
-              <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor={strokeColor} />
-                <stop offset="100%" stopColor="#82ca9d" />
-              </linearGradient>
-            </defs>
           </LineChart>
         ) : (
           <BarChart data={filteredData}>
@@ -127,13 +119,7 @@ const TChart: React.FC<ChartProps> = ({
             <YAxis />
             <Tooltip />
             {showLegend && <Legend />}
-            <Bar dataKey={dataKey} fill={`url(#${gradientId})`} />
-            <defs>
-              <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor={strokeColor} />
-                <stop offset="100%" stopColor="#82ca9d" />
-              </linearGradient>
-            </defs>
+            <Bar dataKey={dataKey} fill={strokeColor} />
           </BarChart>
         )}
       </ResponsiveContainer>

@@ -3,17 +3,18 @@
 import { motion } from "framer-motion";
 import Header from "@/components/ui/header";
 import Link from "next/link";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 
 export default function HomePage() {
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-gradient-to-r from-green-300 to-blue-300 text-black"
+      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <Header />
-      <main className="flex flex-col items-center gap-4 w-full mt-8 sm:mt-16">
+      <div className="flex flex-col items-center gap-4 w-full mt-8 sm:mt-16">
         <h2 className="text-3xl sm:text-4xl font-bold text-center">
           Welcome to the Weather App
         </h2>
@@ -27,22 +28,62 @@ export default function HomePage() {
         >
           Check Weather
         </Link>
-        <section className="mt-8 w-full max-w-2xl text-center">
-          <h3 className="text-2xl sm:text-3xl font-semibold">Features</h3>
-          <ul className="list-disc list-inside mt-4 text-left">
-            <li>Real-time weather updates</li>
-            <li>7-day weather forecast</li>
-            <li>Weather alerts and warnings</li>
-            <li>Detailed weather information including temperature, humidity, wind speed, and more</li>
-          </ul>
-        </section>
-        <section className="mt-8 w-full max-w-2xl text-center">
-          <h3 className="text-2xl sm:text-3xl font-semibold">How It Works</h3>
-          <p className="mt-4">
-            Our weather app uses data from reliable sources to provide you with the most accurate and up-to-date weather information. Simply enter your city or allow location access to get started.
-          </p>
-        </section>
-      </main>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 w-full max-w-4xl">
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl sm:text-3xl font-semibold">Features</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="list-disc list-inside mt-4 text-left">
+                <li>Real-time weather updates</li>
+                <li>7-day weather forecast</li>
+                <li>Weather alerts and warnings</li>
+                <li>Detailed weather information including temperature, humidity, wind speed, and more</li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl sm:text-3xl font-semibold">How It Works</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="mt-4 text-base">
+                Our weather app uses data from OpenWeatherMap to provide you with the most accurate and up-to-date weather information. Simply enter your city to get started.
+              </CardDescription>
+            </CardContent>
+          </Card>
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl sm:text-3xl font-semibold">User Guide</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="mt-4 text-base">
+                To use our weather app, simply navigate to the weather section, enter your city name, and click on the search button. You will be presented with the current weather conditions, a 7-day forecast, and any weather alerts for your area.
+              </CardDescription>
+            </CardContent>
+          </Card>
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl sm:text-3xl font-semibold">About Us</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="mt-4 text-base">
+                We are a team of passionate developers dedicated to providing you with the best weather information available. Our app is constantly updated with the latest data to ensure you are always informed about the weather conditions in your area.
+              </CardDescription>
+            </CardContent>
+          </Card>
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl sm:text-3xl font-semibold">Contact Us</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="mt-4 text-base">
+                If you have any questions or feedback, please feel free to reach out to us at support@weatherapp.com. We value your input and are always looking for ways to improve our app.
+              </CardDescription>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }
