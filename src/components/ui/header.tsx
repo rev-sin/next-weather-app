@@ -94,10 +94,10 @@ export default function Header() {
                 <SignUpButton />
               </SignedOut>
               <SignedIn>
-                <UserButton />
                 <button onClick={handleSendEmail} className="text-blue-500">
                   Send Email
                 </button>
+                <UserButton />
               </SignedIn>
             </div>
           </div>
