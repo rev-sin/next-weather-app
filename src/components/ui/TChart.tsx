@@ -53,7 +53,7 @@ const TChart: React.FC<ChartProps> = ({
 
   return (
     <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto", background: "#fff", color: "black", borderRadius: "10px" }}>
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
+      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px", overflowX: "auto", whiteSpace: "nowrap", gap: "10px" }}>
         <Button onClick={() => setIsLineChart(!isLineChart)} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
           {isLineChart ? "Switch to Bar Chart" : "Switch to Line Chart"}
         </Button>
@@ -101,6 +101,8 @@ const TChart: React.FC<ChartProps> = ({
               type="monotone"
               dataKey={dataKey}
               stroke={strokeColor}
+              dot={false}
+              fill="none"
             />
           </LineChart>
         ) : (

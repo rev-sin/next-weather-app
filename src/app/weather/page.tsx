@@ -7,7 +7,6 @@ import { WeatherData } from "@/types/weather";
 import { motion } from "framer-motion";
 import TChart from "@/components/ui/TChart";
 import HChart from "@/components/ui/HChart";
-
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 
 export default function Weather() {
@@ -59,9 +58,9 @@ export default function Weather() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col w-full max-w-6xl gap-8 items-start mt-8">
+      <div className="flex flex-col w-full max-w-6xl gap-8 items-center mt-8">
         <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
-          <div className="flex flex-col w-full lg:w-1/2 gap-8 mt-8">
+          <div className="flex flex-col w-full lg:w-1/2 gap-8">
             <Card className="w-full shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl sm:text-3xl font-semibold">Weather Search</CardTitle>
@@ -131,7 +130,7 @@ export default function Weather() {
             )}
           </div>
           {weather && (
-            <div className="flex flex-col w-full lg:w-1/2 gap-8">
+            <div className="flex flex-col w-full lg:w-3/4 gap-8">
               <Card className="shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-2xl sm:text-3xl font-semibold">Weather Charts</CardTitle>
@@ -144,7 +143,7 @@ export default function Weather() {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="p-4 shadow-md rounded-md bg-white text-black">
-                      <div className="flex justify-center gap-4 mb-4">
+                      <div className="flex justify-center gap-4 mb-4 overflow-x-auto whitespace-nowrap">
                         <Button
                           onClick={() => setChartType("temperature")}
                           className={
@@ -172,14 +171,12 @@ export default function Weather() {
                             data={temperatureData}
                             dataKey="temp"
                             strokeColor="#8884d8"
-                            gradientId="tempGradient"
                           />
                         ) : (
                           <HChart
                             data={humidityData}
                             dataKey="humidity"
                             strokeColor="#8884d8"
-                            gradientId="humidityGradient"
                           />
                         )}
                       </div>
