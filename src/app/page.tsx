@@ -14,20 +14,27 @@ export default function HomePage() {
       transition={{ duration: 0.5 }}
     >
       <Header />
-      <div className="flex flex-col items-center gap-4 w-full mt-8 sm:mt-16">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center">
-          Welcome to the Weather App
-        </h2>
-        <p className="text-base sm:text-lg text-center">
-          Get the latest weather updates for your city. Click on the Weather
-          link above to get started.
-        </p>
-        <Link
+      <div className="flex flex-col items-center gap-4 w-full mt-20 sm:mt-32">
+        <Card className="shadow-lg w-full max-w-2xl">
+          <CardHeader>
+            <CardTitle className="text-3xl sm:text-4xl font-bold text-center">
+              Welcome to the Weather App
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription className="text-base sm:text-lg text-center">
+              Get the latest weather updates for your city. Click on the Weather link above to get started.
+            </CardDescription>
+            <div className="flex justify-center mt-4">
+              <Link
           href="/weather"
-          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
-        >
+          className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
+              >
           Check Weather
-        </Link>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 w-full max-w-4xl">
           <Card className="shadow-lg">
             <CardHeader>
