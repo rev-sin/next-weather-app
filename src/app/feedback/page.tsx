@@ -10,8 +10,6 @@ export default function FeedbackPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle feedback submission logic here
-    console.log("Feedback submitted:", feedback);
 
     setSubmitted(true);
   };
