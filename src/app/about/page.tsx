@@ -18,14 +18,14 @@ export default function AboutPage() {
           <h1 className="text-3xl font-bold mb-4 text-center">About Us</h1>
           <div className="p-4 bg-gray-100 rounded-lg">
             <p className="mb-4 text-lg">
-              Welcome to the Weather App! We are dedicated to providing you with the
-              latest weather updates for your city. Our mission is to help you stay
-              informed and prepared for any weather conditions.
+              Welcome to the Weather App! We are dedicated to providing you with
+              the latest weather updates for your city. Our mission is to help
+              you stay informed and prepared for any weather conditions.
             </p>
             <p className="mb-4 text-lg">
-              Our team is passionate about meteorology and technology, and we strive
-              to deliver accurate and timely weather information. Thank you for
-              choosing our app!
+              Our team is passionate about meteorology and technology, and we
+              strive to deliver accurate and timely weather information. Thank
+              you for choosing our app!
             </p>
             <div className="text-center">
               <Link href="/" className="text-blue-500 hover:underline text-lg">

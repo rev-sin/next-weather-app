@@ -26,11 +26,7 @@ interface ChartProps {
   strokeColor: string;
 }
 
-const TChart: React.FC<ChartProps> = ({
-  data,
-  dataKey,
-  strokeColor,
-}) => {
+const TChart: React.FC<ChartProps> = ({ data, dataKey, strokeColor }) => {
   const [isLineChart, setIsLineChart] = useState(true);
   const [intervals, setIntervals] = useState(3);
   const [showLegend, setShowLegend] = useState(true);
@@ -52,12 +48,36 @@ const TChart: React.FC<ChartProps> = ({
   const filteredData = data.slice(startIndex, startIndex + intervals);
 
   return (
-    <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto", background: "#fff", color: "black", borderRadius: "10px" }}>
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px", overflowX: "auto", whiteSpace: "nowrap", gap: "10px" }}>
-        <Button onClick={() => setIsLineChart(!isLineChart)} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
+    <div
+      style={{
+        padding: "20px",
+        maxWidth: "1000px",
+        margin: "0 auto",
+        background: "#fff",
+        color: "black",
+        borderRadius: "10px",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "20px",
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+          gap: "10px",
+        }}
+      >
+        <Button
+          onClick={() => setIsLineChart(!isLineChart)}
+          className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
+        >
           {isLineChart ? "Switch to Bar Chart" : "Switch to Line Chart"}
         </Button>
-        <Select onValueChange={(value) => setIntervals(Number(value))} value={intervals.toString()}>
+        <Select
+          onValueChange={(value) => setIntervals(Number(value))}
+          value={intervals.toString()}
+        >
           <SelectTrigger className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
             <SelectValue placeholder="Select intervals" />
           </SelectTrigger>
@@ -67,16 +87,30 @@ const TChart: React.FC<ChartProps> = ({
             <SelectItem value="10">10 Intervals</SelectItem>
           </SelectContent>
         </Select>
-        <Button onClick={() => setShowLegend(!showLegend)} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
+        <Button
+          onClick={() => setShowLegend(!showLegend)}
+          className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
+        >
           {showLegend ? "Hide Legend" : "Show Legend"}
         </Button>
-        <Button onClick={() => setShowGrid(!showGrid)} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
+        <Button
+          onClick={() => setShowGrid(!showGrid)}
+          className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
+        >
           {showGrid ? "Hide Grid" : "Show Grid"}
         </Button>
-        <Button onClick={handlePrev} disabled={startIndex === 0} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
+        <Button
+          onClick={handlePrev}
+          disabled={startIndex === 0}
+          className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
+        >
           Previous
         </Button>
-        <Button onClick={handleNext} disabled={startIndex + intervals >= data.length} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition">
+        <Button
+          onClick={handleNext}
+          disabled={startIndex + intervals >= data.length}
+          className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
+        >
           Next
         </Button>
       </div>

@@ -33,7 +33,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${jetBrainsMono.variable} antialiased`}
         >
           <PostHogProvider>
-            <Header/>
+            <Header />
             <WeatherNotification />
             {children}
           </PostHogProvider>
