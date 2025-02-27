@@ -3,6 +3,7 @@ import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/ui/header";
 import { ClerkProvider } from "@clerk/nextjs";
+import { PostHogProvider } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,8 +31,10 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${jetBrainsMono.variable} antialiased`}
         >
-          <Header />
-          {children}
+          <PostHogProvider>
+            <Header />
+            {children}
+          </PostHogProvider>
         </body>
       </html>
     </ClerkProvider>

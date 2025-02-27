@@ -47,6 +47,9 @@ export default function Header() {
           <Link href="/team" className="text-blue-500" onClick={handleLinkClick}>
             Team
           </Link>
+          <Link href="/feedback" className="text-blue-500" onClick={handleLinkClick}>
+            Feedback
+          </Link>
           <div className="text-blue-500 flex gap-4">
             <SignedOut>
               <SignInButton />
