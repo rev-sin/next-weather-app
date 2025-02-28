@@ -17,7 +17,7 @@ export async function POST(request: Request) {
         const { data, error } = await resend.emails.send({
             from: 'alerts-noreply@nextweather.tech',
             to: [email.emailAddress],
-            subject: 'Hello world',
+            subject: 'Alert! Earthquake Detected',
             react: await EmailTemplate({ firstName: user.firstName || '' }),
         });
 
