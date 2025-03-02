@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Header from "../components/ui/header";
+import Header from "../components/ui/layout/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { PostHogProvider } from "./providers";
 import WeatherNotification from "@/components/ui/weatherNotification";
@@ -12,8 +12,12 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Next Weather",
-  description: "Created by github.com/rev-sin",
+  title: {
+    default: "nextweather",
+    template: "%s | nextweather",
+    absolute: "",
+  },
+  description: "Created by Revanth Singothu and Team",
 };
 
 export default function RootLayout({
@@ -24,10 +28,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${geistSans.variable} antialiased bg-gradient-to-br from-blue-400 to-blue-600`}>
+        <body
+          className={`${geistSans.variable} antialiased bg-gradient-to-br from-purple-400 to-blue-600`}
+        >
           <PostHogProvider>
             <Header />
-            <WeatherNotification />
             {children}
           </PostHogProvider>
         </body>

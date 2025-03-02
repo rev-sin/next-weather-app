@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Header from "@/components/ui/header";
+import Header from "@/components/ui/layout/header";
 
 export default function FeedbackPage() {
   const [feedback, setFeedback] = useState("");
@@ -42,7 +42,7 @@ export default function FeedbackPage() {
             />
             <button
               type="submit"
-              className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition"
+              className="mt-4 px-6 py-2 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition"
             >
               Submit Feedback
             </button>

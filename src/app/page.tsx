@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Header from "@/components/ui/header";
+import Header from "@/components/ui/layout/header";
 import Link from "next/link";
 import {
   Card,
