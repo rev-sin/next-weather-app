@@ -28,7 +28,7 @@ export async function getClimateNews(): Promise<{
 }> {
   try {
     const res = await fetch(
-      `https://newsapi.org/v2/everything?q=weather&apiKey=${process.env.NEWS_API_KEY}`
+      `https://newsapi.org/v2/everything?q=weather+climate&apiKey=${process.env.NEWS_API_KEY}`
     );
 
     if (!res.ok) {
