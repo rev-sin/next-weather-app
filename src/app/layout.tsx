@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import Header from "../components/ui/header";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -8,11 +8,6 @@ import WeatherNotification from "@/components/ui/weatherNotification";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
@@ -29,9 +24,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${jetBrainsMono.variable} antialiased`}
-        >
+        <body className={`${geistSans.variable} antialiased bg-gradient-to-br from-blue-400 to-blue-600`}>
           <PostHogProvider>
             <Header />
             <WeatherNotification />

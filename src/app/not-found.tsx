@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function NotFoundPage() {
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 bg-gradient-to-r from-red-300 to-yellow-300 text-black"
+      className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

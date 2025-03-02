@@ -18,12 +18,18 @@ export default function Header() {
   };
 
   const handleSendEmail = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to send this email?"
+    );
+    if (!confirmed) return;
+
     try {
       const response = await fetch("/api/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ message: "Hello, this is a test email." }),
       });
 
       if (!response.ok) {
@@ -43,59 +49,59 @@ export default function Header() {
             className="text-white font-bold text-xl"
             onClick={handleLinkClick}
           >
-            Next Weather
+            next weather
           </Link>
         </h1>
         <button
           className="md:hidden text-white"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          ☰
+          <b>menu</b>
         </button>
         <nav
           className={`flex-col md:flex-row gap-4 transition-transform duration-300 ${
             menuOpen
               ? "flex absolute top-full left-0 right-0 bg-white p-4 shadow-lg transform translate-y-0"
               : "hidden transform -translate-y-full"
-          } md:flex md:relative md:translate-y-0`}
+          } md:flex md:relative md:translate-y-0 ml-auto`}
         >
-          <div className="flex flex-col md:flex-row gap-4 bg-white rounded-l-lg rounded-r-lg p-4">
+          <div className="flex flex-col md:flex-row gap-4 bg-white rounded-full  p-4">
             <Link
               href="/weather"
               className="text-blue-500"
               onClick={handleLinkClick}
             >
-              Weather
+              weather
             </Link>
             <Link
               href="/about"
               className="text-blue-500"
               onClick={handleLinkClick}
             >
-              About
+              about
             </Link>
             <Link
               href="/team"
               className="text-blue-500"
               onClick={handleLinkClick}
             >
-              Team
+              team
             </Link>
             <Link
               href="/feedback"
               className="text-blue-500"
               onClick={handleLinkClick}
             >
-              Feedback
+              feedback
             </Link>
-            <div className="text-blue-500 flex gap-4">
+            <div className="flex flex-col gap-4">
               <SignedOut>
                 <SignInButton />
                 <SignUpButton />
               </SignedOut>
               <SignedIn>
                 <button onClick={handleSendEmail} className="text-blue-500">
-                  Send Email
+                  send email
                 </button>
                 <UserButton />
               </SignedIn>

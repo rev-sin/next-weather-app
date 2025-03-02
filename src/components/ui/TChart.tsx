@@ -11,24 +11,29 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Button } from "./button"; // Adjust the import path as necessary
+import { Button } from "./button";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
-} from "./select"; // Adjust the import path as necessary
+} from "./select";
 
-interface ChartProps {
+const chartConfig = {
+  temperature: {
+    label: "Temperature",
+    color: "#8884d8",
+  },
+};
+
+interface TemperatureChartProps {
   data: { time: string; temp: number }[];
-  dataKey: string;
-  strokeColor: string;
 }
 
-const TChart: React.FC<ChartProps> = ({ data, dataKey, strokeColor }) => {
+const TemperatureChart: React.FC<TemperatureChartProps> = ({ data }) => {
   const [isLineChart, setIsLineChart] = useState(true);
-  const [intervals, setIntervals] = useState(3);
+  const [intervals, setIntervals] = useState(5);
   const [showLegend, setShowLegend] = useState(true);
   const [showGrid, setShowGrid] = useState(true);
   const [startIndex, setStartIndex] = useState(0);
@@ -104,17 +109,20 @@ const TChart: React.FC<ChartProps> = ({ data, dataKey, strokeColor }) => {
           disabled={startIndex === 0}
           className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
         >
-          Previous
+          &#8592;
         </Button>
         <Button
           onClick={handleNext}
           disabled={startIndex + intervals >= data.length}
           className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
         >
-          Next
+          &#8594;
         </Button>
       </div>
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer
+        width="100%"
+        aspect={window.innerWidth < 768 ? 7 / 5 : 3 / 1}
+      >
         {isLineChart ? (
           <LineChart data={filteredData}>
             {showGrid && <CartesianGrid strokeDasharray="3 3" />}
@@ -133,8 +141,8 @@ const TChart: React.FC<ChartProps> = ({ data, dataKey, strokeColor }) => {
             {showLegend && <Legend />}
             <Line
               type="monotone"
-              dataKey={dataKey}
-              stroke={strokeColor}
+              dataKey="temp"
+              stroke={chartConfig.temperature.color}
               dot={false}
               fill="none"
             />
@@ -154,8 +162,7 @@ const TChart: React.FC<ChartProps> = ({ data, dataKey, strokeColor }) => {
             />
             <YAxis />
             <Tooltip />
-            {showLegend && <Legend />}
-            <Bar dataKey={dataKey} fill={strokeColor} />
+            <Bar dataKey="temp" fill={chartConfig.temperature.color} />
           </BarChart>
         )}
       </ResponsiveContainer>
@@ -163,4 +170,4 @@ const TChart: React.FC<ChartProps> = ({ data, dataKey, strokeColor }) => {
   );
 };
 
-export default TChart;
+export default TemperatureChart;

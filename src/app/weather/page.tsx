@@ -20,40 +20,40 @@ export default function Weather() {
   const [humidityData, setHumidityData] = useState<
     { time: string; humidity: number }[]
   >([]);
-  const [chartType, setChartType] = useState<"temperature" | "humidity">(
-    "temperature"
-  );
 
   const handleGetWeather = async () => {
     setLoading(true);
     setError("");
-    const result = await getWeatherData(city);
-    setLoading(false);
-    if (result.error) {
-      setError("Failed to fetch weather data. Please try again.");
-      setWeather(null);
-      setTemperatureData([]);
-      setHumidityData([]);
-    } else {
-      setWeather(result.data || null);
-      const tempData =
-        result.data?.list.map((item: any) => ({
+    try {
+      const result = await getWeatherData(city);
+      setLoading(false);
+      if (result.error) {
+        setError("Failed to fetch weather data. Please try again.");
+        setWeather(null);
+        setTemperatureData([]);
+        setHumidityData([]);
+      } else {
+        setWeather(result.data || null);
+        const tempData = result.data?.list.map((item: any) => ({
           time: item.dt_txt,
           temp: item.main.temp,
         })) || [];
-      const humData =
-        result.data?.list.map((item: any) => ({
+        const humData = result.data?.list.map((item: any) => ({
           time: item.dt_txt,
           humidity: item.main.humidity,
         })) || [];
-      setTemperatureData(tempData);
-      setHumidityData(humData);
+        setTemperatureData(tempData);
+        setHumidityData(humData);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError("An error occurred while fetching weather data.");
     }
   };
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-white"
+      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -149,42 +149,15 @@ export default function Weather() {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="p-4 shadow-md rounded-md bg-white text-black">
-                      <div className="flex justify-center gap-4 mb-4 overflow-x-auto whitespace-nowrap">
-                        <Button
-                          onClick={() => setChartType("temperature")}
-                          className={
-                            chartType === "temperature"
-                              ? "bg-blue-500 text-white"
-                              : ""
-                          }
-                        >
-                          Temperature
-                        </Button>
-                        <Button
-                          onClick={() => setChartType("humidity")}
-                          className={
-                            chartType === "humidity"
-                              ? "bg-blue-500 text-white"
-                              : ""
-                          }
-                        >
-                          Humidity
-                        </Button>
-                      </div>
                       <div className="w-full">
-                        {chartType === "temperature" ? (
-                          <TChart
-                            data={temperatureData}
-                            dataKey="temp"
-                            strokeColor="#8884d8"
-                          />
-                        ) : (
-                          <HChart
-                            data={humidityData}
-                            dataKey="humidity"
-                            strokeColor="#8884d8"
-                          />
-                        )}
+                        <TChart data={temperatureData} />
+                      </div>
+                      <div className="w-full mt-8">
+                        <HChart
+                          data={humidityData}
+                          dataKey="humidity"
+                          strokeColor="#8884d8"
+                        />
                       </div>
                     </div>
                   </motion.div>
