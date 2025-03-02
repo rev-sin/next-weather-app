@@ -94,7 +94,7 @@ export default function Header() {
             >
               feedback
             </Link>
-            <div className="flex flex-col gap-4">
+            <div className="flex gap-4">
               <SignedOut>
                 <SignInButton />
                 <SignUpButton />
