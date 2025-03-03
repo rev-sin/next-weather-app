@@ -1,0 +1,21 @@
+meta {
+  name: Send email developement
+  type: http
+  seq: 4
+}
+
+post {
+  url: localhost:3000/api/send
+  body: json
+  auth: none
+}
+
+params:query {
+  : 
+}
+
+body:json {
+  {
+    "email": "revanthsingothu@gmail.com"
+  }
+}

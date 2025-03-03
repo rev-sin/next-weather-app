@@ -1,0 +1,17 @@
+meta {
+  name: Send email production
+  type: http
+  seq: 3
+}
+
+post {
+  url: nextweather.tech/api/send/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "revanthsingothu@gmail.com"
+  }
+}
