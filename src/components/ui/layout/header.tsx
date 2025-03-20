@@ -31,10 +31,17 @@ export default function Header() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: "Hello, this is a test email." }),
+        body: JSON.stringify({
+          subject: "your subject here",
+          message: "Hello, this is a test email.",
+          to: "goyalpawan765@gmail.com",
+          from: "alerts-noreply@nextweather.tech",
+        }),
       });
 
       if (!response.ok) {
+        const errorData = await response.text(); // Get error details
+        console.error("Email API Error:", errorData);
         throw new Error("Failed to send email");
       }
     } catch (error) {
@@ -86,6 +93,9 @@ export default function Header() {
             >
               about
             </Link>
+            <button onClick={handleSendEmail} className="text-blue-500">
+              broadcast
+            </button>
             <Link
               href="/team"
               className="text-blue-500"
@@ -100,7 +110,10 @@ export default function Header() {
             >
               feedback
             </Link>
-            <p onClick={toggleNotifications} className="text-blue-500 hover:cursor-pointer">
+            <p
+              onClick={toggleNotifications}
+              className="text-blue-500 hover:cursor-pointer"
+            >
               {notificationsEnabled
                 ? "Disable Notifications"
                 : "Enable Notifications"}
