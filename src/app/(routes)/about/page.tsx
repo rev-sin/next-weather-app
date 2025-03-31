@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Header from "@/components/ui/layout/header";
 import Link from "next/link";
 
 export default function AboutPage() {
@@ -12,7 +11,6 @@ export default function AboutPage() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Header />
       <main className="flex flex-col items-center gap-4 w-full mt-8 sm:mt-16">
         <div className="w-full max-w-2xl shadow-lg rounded-lg overflow-hidden bg-white text-black p-6">
           <h1 className="text-3xl font-bold mb-4 text-center">About Us</h1>

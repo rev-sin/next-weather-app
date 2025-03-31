@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import Header from "@/components/ui/layout/header";
 import Image from "next/image";
 import {
   Card,
@@ -85,7 +84,6 @@ export default function TeamPage() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Header />
       <main className="flex flex-col items-center gap-4 w-full mt-16 sm:mt-16">
         <nav className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-4 sm:mb-8">
           {teamMembers.map((member) => (

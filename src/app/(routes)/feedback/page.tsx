@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Header from "@/components/ui/layout/header";
 
 export default function FeedbackPage() {
   const [feedback, setFeedback] = useState("");
@@ -21,7 +20,6 @@ export default function FeedbackPage() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Header />
       <main className="flex flex-col items-center gap-4 w-full mt-8 sm:mt-16">
         <h2 className="text-3xl sm:text-4xl font-bold text-center">
           We Value Your Feedback

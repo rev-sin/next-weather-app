@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Header from "@/components/ui/layout/header";
 import Link from "next/link";
 import {
   Card,
@@ -19,7 +18,6 @@ export default function HomePage() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Header />
       <div className="flex flex-col items-center gap-4 w-full mt-20 sm:mt-32">
         <Card className="shadow-lg w-full max-w-2xl">
           <CardHeader>
