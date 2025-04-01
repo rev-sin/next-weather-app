@@ -1,4 +1,4 @@
-import { emailbroadcasttemplate } from "@/components/ui/emailbroadcasttemplate";
+import { emailbroadcasttemplate } from "@/app/api/broadcast/_components/emailbroadcasttemplate";
 import { Resend } from "resend";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 import React from "react";

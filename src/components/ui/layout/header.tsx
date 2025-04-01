@@ -9,7 +9,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-import WeatherNotification from "../weatherNotification";
+import WeatherNotification from "../../../app/api/send/_components/weatherNotification";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);

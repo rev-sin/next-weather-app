@@ -1,20 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { getWeatherData, fetchAqiData } from "@/actions/actions";
+import {
+  getWeatherData,
+  fetchAqiData,
+} from "@/app/(routes)/weather/_actions/WeatherData";
 import { WeatherData } from "@/types/weather";
 import { motion } from "framer-motion";
-import TChart from "@/components/ui/TChart";
-import HChart from "@/components/ui/HChart";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import TChart from "@/app/(routes)/weather/_components/TChart";
+import HChart from "@/app/(routes)/weather/_components/HChart";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 
-const WeatherMap = dynamic(() => import("@/actions/WeatherMap"), {
-  ssr: false,
-});
+const WeatherMap = dynamic(
+  () => import("@/app/(routes)/weather/_actions/WeatherMap"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Weather() {
   const [city, setCity] = useState("");

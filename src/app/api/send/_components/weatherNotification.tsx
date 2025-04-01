@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
-import { getClimateNews } from "../../actions/notification";
-import { Article } from "../../types/notification";
+import { getClimateNews } from "../../../(routes)/weather/_actions/Notification";
+import { Article } from "../../../../types/notification";
 
 const WeatherNotification = () => {
   const [articles, setArticles] = useState<Article[]>([]);

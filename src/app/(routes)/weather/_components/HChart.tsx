@@ -11,14 +11,14 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Button } from "./button";
+import { Button } from "../../../../components/ui/button";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
-} from "./select";
+} from "../../../../components/ui/select";
 
 interface ChartProps {
   data: { time: string; humidity: number }[];
