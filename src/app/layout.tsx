@@ -4,7 +4,6 @@ import "./globals.css";
 import Header from "../components/ui/layout/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { PostHogProvider } from "./providers";
-import WeatherNotification from "@/components/ui/weatherNotification";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
