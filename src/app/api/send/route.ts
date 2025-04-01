@@ -1,4 +1,4 @@
-import { EmailTemplate } from "@/components/email-template";
+import { EmailTemplate } from "@/app/api/send/_components/email-template";
 import { Resend } from "resend";
 import { currentUser } from "@clerk/nextjs/server";
 

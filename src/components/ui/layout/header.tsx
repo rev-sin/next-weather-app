@@ -9,11 +9,9 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-import WeatherNotification from "../../../app/api/send/_components/weatherNotification";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   const handleLinkClick = () => {
     setMenuOpen(false);
@@ -47,10 +45,6 @@ export default function Header() {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const toggleNotifications = () => {
-    setNotificationsEnabled(!notificationsEnabled);
   };
 
   return (
@@ -110,14 +104,6 @@ export default function Header() {
             >
               feedback
             </Link>
-            <p
-              onClick={toggleNotifications}
-              className="text-blue-500 hover:cursor-pointer"
-            >
-              {notificationsEnabled
-                ? "Disable Notifications"
-                : "Enable Notifications"}
-            </p>
             <div className="flex gap-4">
               <SignedOut>
                 <SignInButton />
@@ -132,7 +118,6 @@ export default function Header() {
             </div>
           </div>
         </nav>
-        {notificationsEnabled && <WeatherNotification />}
       </div>
     </header>
   );
