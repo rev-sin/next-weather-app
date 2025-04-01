@@ -1,6 +1,6 @@
 "use server";
 
-import { newsSchema } from "@/app/(routes)/weather/_actions/schema";
+import { newsSchema } from "./schema";
 import { z } from "zod";
 
 export async function getClimateNews(): Promise<{

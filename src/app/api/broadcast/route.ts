@@ -1,4 +1,4 @@
-import { emailbroadcasttemplate } from "@/app/api/broadcast/_components/emailbroadcasttemplate";
+import emailbroadcasttemplate from "./_components/emailbroadcasttemplate";
 import { Resend } from "resend";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 import React from "react";
@@ -65,7 +65,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       subject,
       react: React.createElement(emailbroadcasttemplate, {
         firstName: "User",
-        message,
       }),
     });
 

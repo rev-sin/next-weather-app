@@ -38,7 +38,7 @@ export default function Header() {
       });
 
       if (!response.ok) {
-        const errorData = await response.text(); // Get error details
+        const errorData = await response.text();
         console.error("Email API Error:", errorData);
         throw new Error("Failed to send email");
       }
