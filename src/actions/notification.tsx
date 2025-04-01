@@ -1,26 +1,7 @@
 "use server";
 
+import { newsSchema } from "@/actions/schema";
 import { z } from "zod";
-
-const newsSchema = z.object({
-  status: z.string(),
-  totalResults: z.number(),
-  articles: z.array(
-    z.object({
-      source: z.object({
-        id: z.string().nullable(),
-        name: z.string(),
-      }),
-      author: z.string().nullable(),
-      title: z.string(),
-      description: z.string().nullable(),
-      url: z.string(),
-      urlToImage: z.string().nullable(),
-      publishedAt: z.string(),
-      content: z.string().nullable(),
-    })
-  ),
-});
 
 export async function getClimateNews(): Promise<{
   data?: any;

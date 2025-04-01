@@ -4,24 +4,21 @@ import { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const WeatherMap = () => {
+const  WeatherMap = () => {
   useEffect(() => {
-    // Ensure the map container exists
     const mapContainer = document.getElementById("map");
     if (!mapContainer) {
       console.error("Map container not found.");
       return;
     }
 
-    // Initialize the Leaflet map
-    const map = L.map("map").setView([20, 78], 5); // Default to India
+    const map = L.map("map").setView([20, 78], 5);
 
-    // Add OpenStreetMap as the base layer
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    // Add OpenWeatherMap tile layer (e.g., clouds)
     L.tileLayer(
       `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY}`,
       {
@@ -29,7 +26,6 @@ const WeatherMap = () => {
       }
     ).addTo(map);
 
-    // Cleanup on component unmount
     return () => {
       map.remove();
     };

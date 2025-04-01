@@ -70,7 +70,7 @@ export const aqiSchema = z.object({
   list: z.array(
     z.object({
       main: z.object({
-        aqi: z.number(), // AQI value (1-5)
+        aqi: z.number(),
       }),
       components: z.object({
         co: z.number(),
@@ -82,7 +82,27 @@ export const aqiSchema = z.object({
         pm10: z.number(),
         nh3: z.number(),
       }),
-      dt: z.number(), // Timestamp
+      dt: z.number(),
+    })
+  ),
+});
+
+export const newsSchema = z.object({
+  status: z.string(),
+  totalResults: z.number(),
+  articles: z.array(
+    z.object({
+      source: z.object({
+        id: z.string().nullable(),
+        name: z.string(),
+      }),
+      author: z.string().nullable(),
+      title: z.string(),
+      description: z.string().nullable(),
+      url: z.string(),
+      urlToImage: z.string().nullable(),
+      publishedAt: z.string(),
+      content: z.string().nullable(),
     })
   ),
 });
