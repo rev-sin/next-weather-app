@@ -15,6 +15,10 @@ import HChart from "@/app/(routes)/weather/_components/HChart";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 
+// app/(routes)/weather/page.tsx
+import ExportButton from "@/app/(routes)/weather/_components/ExportButton";
+
+
 const WeatherMap = dynamic(
   () => import("@/app/(routes)/weather/_actions/WeatherMap"),
   {
@@ -82,6 +86,21 @@ export default function Weather() {
       setAqi(null);
     }
   };
+
+  {weather && (
+    <div className="flex gap-2 mt-4">
+      <ExportButton 
+        data={temperatureData} 
+        filename={`${weather.city.name}_temperature.csv`} 
+      />
+      <ExportButton 
+        data={humidityData} 
+        filename={`${weather.city.name}_humidity.csv`} 
+      />
+    </div>
+  )}
+
+  
 
   return (
     <motion.div

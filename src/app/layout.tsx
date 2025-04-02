@@ -5,6 +5,22 @@ import Header from "../components/ui/layout/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { PostHogProvider } from "./providers";
 
+
+// app/layout.tsx
+import { Toaster } from "@/components/ui/toaster";
+
+export function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <Toaster /> {/* Must be present for toasts to work */}
+      </body>
+    </html>
+  );
+}
+
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
