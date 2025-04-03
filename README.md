@@ -1,6 +1,6 @@
 # **Next Weather**
 
-A realtime environment monitoring system built with passion for Software Engineering Course - Sem VI
+A realtime environment monitoring system built with passion for Software Engineering Course - Sem VI.
 
 ## Team Members:-
 
