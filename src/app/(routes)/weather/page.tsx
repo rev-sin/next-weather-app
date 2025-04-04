@@ -18,6 +18,8 @@ import { AqiCard } from "./_components/AqiCard";
 // app/(routes)/weather/page.tsx
 import ExportButton from "@/app/(routes)/weather/_components/ExportButton";
 import { AiAssistantFab } from "./_components/AiAssistantFab";
+import { TransparentPopup } from "./_components/TransparentPopup";
+import { AISearch } from "./_components/AISearch";
 
 
 export default function Weather() {
@@ -29,6 +31,8 @@ export default function Weather() {
       ssr: false,
     }
   );
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -224,6 +228,18 @@ export default function Weather() {
                   <CardTitle className="text-2xl sm:text-3xl font-semibold">
                     Weather Charts
                   </CardTitle>
+                  
+                  <button
+                        onClick={() => setIsPopupOpen(true)}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white text-sm font-medium rounded-full shadow-md transition-all duration-200 transform hover:scale-105"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                        Ask AI & Gain Insights
+                      </button>
+                  
+          
                 </CardHeader>
                 <CardContent>
                   <motion.div
@@ -285,6 +301,17 @@ export default function Weather() {
       </div>
 
 
+      <TransparentPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
+        <div className="space-y-6">
+          <h2 className="text-white text-2xl font-bold text-center">
+            Air Quality AI Assistant
+          </h2>
+          <p className="text-white text-opacity-80 text-center">
+            Ask about health impacts, safety measures, or pollution details
+          </p>
+          <AISearch />
+        </div>
+      </TransparentPopup>          
 
     </motion.div>
   );

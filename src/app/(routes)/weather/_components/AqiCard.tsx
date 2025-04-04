@@ -1,7 +1,10 @@
 "use client"
+import { useState } from "react";
 
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { AISearch } from './AISearch';
+import { TransparentPopup } from './TransparentPopup';
 
 export function PollutantIcon({ pollutant }: { pollutant: string }) {
   const icons = {
@@ -39,12 +42,17 @@ const HEALTH_MESSAGES = {
 };
 
 export function AqiCard({ aqi }: { aqi: { value: number; pollutant: string; category: string } }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+
   return (
+    <>
     <Card className="w-full shadow-lg">
       <CardHeader>
         <CardTitle className="text-2xl sm:text-3xl font-semibold">
           Air Quality Index (US EPA)
         </CardTitle>
+
       </CardHeader>
       <CardContent>
         <motion.div
@@ -75,5 +83,6 @@ export function AqiCard({ aqi }: { aqi: { value: number; pollutant: string; cate
         </motion.div>
       </CardContent>
     </Card>
+  </>
   );
 }
