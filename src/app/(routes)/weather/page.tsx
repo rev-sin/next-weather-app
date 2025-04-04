@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
-  getWeatherData,
   fetchAqiData,
+  getWeatherDataByCoords,
 } from "@/app/(routes)/weather/_actions/WeatherData";
 import { WeatherData } from "@/types/weather";
 import { motion } from "framer-motion";
@@ -42,44 +42,61 @@ export default function Weather() {
   const handleGetWeather = async () => {
     setLoading(true);
     setError("");
-    try {
-      const result = await getWeatherData(city);
-      setLoading(false);
 
-      if (result.error) {
+    try {
+      const geoRes = await fetch(`/api/geo?city=${city}`);
+      const geoData = await geoRes.json();
+
+      if (!geoRes.ok || !geoData.lat || !geoData.lon) {
+        setError("Could not fetch location for the city.");
+        setWeather(null);
+        setTemperatureData([]);
+        setHumidityData([]);
+        setAqi(null);
+        setLoading(false);
+        return;
+      }
+
+      const weatherResult = await getWeatherDataByCoords(
+        geoData.lat,
+        geoData.lon
+      );
+
+      if (weatherResult.error) {
         setError("Failed to fetch weather data. Please try again.");
         setWeather(null);
         setTemperatureData([]);
         setHumidityData([]);
         setAqi(null);
-      } else {
-        setWeather(result.data || null);
-
-        const tempData =
-          result.data?.list.map((item: any) => ({
-            time: item.dt_txt,
-            temp: item.main.temp,
-          })) || [];
-        const humData =
-          result.data?.list.map((item: any) => ({
-            time: item.dt_txt,
-            humidity: item.main.humidity,
-          })) || [];
-        setTemperatureData(tempData);
-        setHumidityData(humData);
-
-        const aqiResult = await fetchAqiData(
-          result.data?.city.coord.lat ?? 0,
-          result.data?.city.coord.lon ?? 0
-        );
-
-        if (aqiResult.error) {
-          setError(aqiResult.error);
-          setAqi(null);
-        } else {
-          setAqi(aqiResult.data || null);
-        }
+        setLoading(false);
+        return;
       }
+
+      setWeather(weatherResult.data || null);
+
+      const tempData =
+        weatherResult.data?.list.map((item: any) => ({
+          time: item.dt_txt,
+          temp: item.main.temp,
+        })) || [];
+      const humData =
+        weatherResult.data?.list.map((item: any) => ({
+          time: item.dt_txt,
+          humidity: item.main.humidity,
+        })) || [];
+      setTemperatureData(tempData);
+      setHumidityData(humData);
+
+      const aqiResult = await fetchAqiData(geoData.lat, geoData.lon);
+
+      if (aqiResult.error) {
+        setError(aqiResult.error);
+        setAqi(null);
+      } else {
+        setAqi(aqiResult.data || null);
+      }
+
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       setError("An error occurred while fetching weather data.");

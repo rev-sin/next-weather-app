@@ -81,6 +81,13 @@ export default function Header() {
               weather
             </Link>
             <Link
+              href="/air"
+              className="text-blue-500"
+              onClick={handleLinkClick}
+            >
+              air
+            </Link>
+            <Link
               href="/about"
               className="text-blue-500"
               onClick={handleLinkClick}
