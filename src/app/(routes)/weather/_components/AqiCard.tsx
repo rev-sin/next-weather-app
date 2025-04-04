@@ -12,7 +12,7 @@ export function PollutantIcon({ pollutant }: { pollutant: string }) {
     so2: "🔴",   // Red circle
     co: "⚫"     // Black circle
   };
-
+  if (!pollutant) return null;
   return (
     <span className="text-2xl" title={pollutant.toUpperCase()}>
       {icons[pollutant as keyof typeof icons] || "🟢"}

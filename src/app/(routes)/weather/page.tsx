@@ -17,6 +17,7 @@ import "leaflet/dist/leaflet.css";
 import { AqiCard } from "./_components/AqiCard";
 // app/(routes)/weather/page.tsx
 import ExportButton from "@/app/(routes)/weather/_components/ExportButton";
+import { AiAssistantFab } from "./_components/AiAssistantFab";
 
 
 export default function Weather() {
@@ -44,6 +45,8 @@ export default function Weather() {
     pollutant: string;
     category: string;
   } | null>(null);
+
+  const [advice, setAdvice] = useState<string>("");
 
   const handleGetWeather = async () => {
     setLoading(true);
@@ -126,6 +129,8 @@ export default function Weather() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+
+
       <div className="flex flex-col w-full max-w-6xl gap-8 items-center mt-8">
         <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
           <div className="flex flex-col w-full mt-8 gap-8"> 
@@ -160,6 +165,7 @@ export default function Weather() {
                 </form>
               </CardContent>
             </Card>
+
             {weather && (
               <>
                 <Card className="w-full shadow-lg">
@@ -203,7 +209,7 @@ export default function Weather() {
                 </Card>
 
                 {aqi && (
-                    <AqiCard aqi={aqi} />
+                  <AqiCard aqi={aqi} />
                 )}
 
               </>
@@ -238,7 +244,8 @@ export default function Weather() {
                         </div>
 
                       </div>
-                      
+
+
                       <div className="w-full mt-8">
                         <HChart
                           data={humidityData}
@@ -268,10 +275,17 @@ export default function Weather() {
                   <WeatherMap />
                 </CardContent>
               </Card>
+
+
+              {aqi && <AiAssistantFab aqi={aqi.value} />}
+
             </div>
           )}
         </div>
       </div>
+
+
+
     </motion.div>
   );
 }
