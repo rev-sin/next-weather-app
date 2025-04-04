@@ -13,37 +13,46 @@ import {
 
 import { teamMembers } from "./_members/members";
 
+// Utility function to get the next member in the list
+const getNextMember = (currentMemberName: string) => {
+  const currentIndex = teamMembers.findIndex(
+    (member) => member.name === currentMemberName
+  );
+  const nextIndex = (currentIndex + 1) % teamMembers.length;
+  return teamMembers[nextIndex];
+};
+
+// Clears any existing interval
+const clearExistingInterval = (intervalRef: React.MutableRefObject<NodeJS.Timeout | null>) => {
+  if (intervalRef.current) {
+    clearInterval(intervalRef.current);
+  }
+};
+
+// Creates a new interval and sets it to rotate selected members
+const createNewInterval = (
+  setSelectedMember: React.Dispatch<React.SetStateAction<typeof teamMembers[0]>>,
+  intervalRef: React.MutableRefObject<NodeJS.Timeout | null>
+) => {
+  intervalRef.current = setInterval(() => {
+    setSelectedMember((prevMember) => getNextMember(prevMember.name));
+  }, 5000);
+};
+
 export default function TeamPage() {
   const [selectedMember, setSelectedMember] = useState(teamMembers[0]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const resetInterval = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    intervalRef.current = setInterval(() => {
-      setSelectedMember((prevMember) => {
-        const currentIndex = teamMembers.findIndex(
-          (member) => member.name === prevMember.name
-        );
-        const nextIndex = (currentIndex + 1) % teamMembers.length;
-        return teamMembers[nextIndex];
-      });
-    }, 5000);
-  };
-
   useEffect(() => {
-    resetInterval();
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
+    clearExistingInterval(intervalRef);
+    createNewInterval(setSelectedMember, intervalRef);
+    return () => clearExistingInterval(intervalRef);
   }, []);
 
   const handleMemberClick = (member: (typeof teamMembers)[0]) => {
     setSelectedMember(member);
-    resetInterval();
+    clearExistingInterval(intervalRef);
+    createNewInterval(setSelectedMember, intervalRef);
   };
 
   return (
@@ -55,22 +64,26 @@ export default function TeamPage() {
     >
       <main className="flex flex-col items-center gap-4 w-full mt-16 sm:mt-16">
         <nav className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-4 sm:mb-8">
-          {teamMembers.map((member) => (
-            <motion.div
-              key={member.name}
-              className={`cursor-pointer p-2 sm:p-4 rounded-lg transition-colors duration-300 ease-in-out ${
-                selectedMember.name === member.name
-                  ? "bg-purple-200"
-                  : "hover:bg-purple-100"
-              }`}
-              onClick={() => handleMemberClick(member)}
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              {member.name}
-            </motion.div>
-          ))}
+          {teamMembers.map((member) => {
+            const isSelected = selectedMember.name === member.name;
+            const cardClasses = `cursor-pointer p-2 sm:p-4 rounded-lg transition-colors duration-300 ease-in-out ${
+              isSelected ? "bg-purple-200" : "hover:bg-purple-100"
+            }`;
+
+            return (
+              <motion.div
+                key={member.name}
+                className={cardClasses}
+                onClick={() => handleMemberClick(member)}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                {member.name}
+              </motion.div>
+            );
+          })}
         </nav>
+
         <motion.section
           className="w-full sm:w-3/4 flex justify-center"
           initial={{ x: 100, opacity: 0 }}
