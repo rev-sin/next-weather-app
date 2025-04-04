@@ -62,15 +62,12 @@ export const weatherSchema = z.object({
   }),
 });
 
+
 export const aqiSchema = z.object({
-  coord: z.object({
-    lon: z.number(),
-    lat: z.number(),
-  }),
   list: z.array(
     z.object({
       main: z.object({
-        aqi: z.number(),
+        aqi: z.number().min(1).max(5),
       }),
       components: z.object({
         co: z.number(),
@@ -82,7 +79,6 @@ export const aqiSchema = z.object({
         pm10: z.number(),
         nh3: z.number(),
       }),
-      dt: z.number(),
     })
   ),
 });

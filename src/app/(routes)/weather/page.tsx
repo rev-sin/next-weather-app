@@ -14,19 +14,21 @@ import TChart from "@/app/(routes)/weather/_components/TChart";
 import HChart from "@/app/(routes)/weather/_components/HChart";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
-
+import { AqiCard } from "./_components/AqiCard";
 // app/(routes)/weather/page.tsx
 import ExportButton from "@/app/(routes)/weather/_components/ExportButton";
 
 
-const WeatherMap = dynamic(
-  () => import("@/app/(routes)/weather/_actions/WeatherMap"),
-  {
-    ssr: false,
-  }
-);
-
 export default function Weather() {
+
+  
+  const WeatherMap = dynamic(
+    () => import("@/app/(routes)/weather/_actions/WeatherMap"),
+    {
+      ssr: false,
+    }
+  );
+
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState("");
@@ -37,7 +39,11 @@ export default function Weather() {
   const [humidityData, setHumidityData] = useState<
     { time: string; humidity: number }[]
   >([]);
-  const [aqi, setAqi] = useState<number | null>(null);
+  const [aqi, setAqi] = useState<{
+    value: number;
+    pollutant: string;
+    category: string;
+  } | null>(null);
 
   const handleGetWeather = async () => {
     setLoading(true);
@@ -87,35 +93,29 @@ export default function Weather() {
       setTemperatureData(tempData);
       setHumidityData(humData);
 
-      const aqiResult = await fetchAqiData(geoData.lat, geoData.lon);
-
+      const aqiResult = await fetchAqiData(
+        weatherResult.data?.city.coord.lat ?? 0,
+        weatherResult.data?.city.coord.lon ?? 0
+      );
+  
       if (aqiResult.error) {
         setError(aqiResult.error);
         setAqi(null);
-      } else {
-        setAqi(aqiResult.data || null);
+      } else if (aqiResult.data) {
+        setAqi({
+          value: aqiResult.data.epaAqi,
+          pollutant: aqiResult.data.mainPollutant,
+          category: aqiResult.data.category
+        });
       }
-
-      setLoading(false);
     } catch (error) {
       setLoading(false);
       setError("An error occurred while fetching weather data.");
       setAqi(null);
+    }finally {
+      setLoading(false);
     }
   };
-
-  {weather && (
-    <div className="flex gap-2 mt-4">
-      <ExportButton 
-        data={temperatureData} 
-        filename={`${weather.city.name}_temperature.csv`} 
-      />
-      <ExportButton 
-        data={humidityData} 
-        filename={`${weather.city.name}_humidity.csv`} 
-      />
-    </div>
-  )}
 
   
 
@@ -128,7 +128,8 @@ export default function Weather() {
     >
       <div className="flex flex-col w-full max-w-6xl gap-8 items-center mt-8">
         <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
-          <div className="flex flex-col w-full mt-8 gap-8">
+          <div className="flex flex-col w-full mt-8 gap-8"> 
+            {/* Left Side */}
             <Card className="w-full shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl sm:text-3xl font-semibold">
@@ -201,42 +202,15 @@ export default function Weather() {
                   </CardContent>
                 </Card>
 
-                {aqi !== null && (
-                  <Card className="w-full shadow-lg">
-                    <CardHeader>
-                      <CardTitle className="text-2xl sm:text-3xl font-semibold">
-                        Air Quality Index (AQI)
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <motion.div
-                        className="flex flex-col gap-4 w-full mt-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <div className="p-4 shadow-md rounded-md bg-white text-black">
-                          <p className="text-lg">
-                            AQI: {aqi} (
-                            {aqi === 1
-                              ? "Good"
-                              : aqi === 2
-                              ? "Fair"
-                              : aqi === 3
-                              ? "Moderate"
-                              : aqi === 4
-                              ? "Poor"
-                              : "Very Poor"}
-                            )
-                          </p>
-                        </div>
-                      </motion.div>
-                    </CardContent>
-                  </Card>
+                {aqi && (
+                    <AqiCard aqi={aqi} />
                 )}
+
               </>
             )}
           </div>
+          
+          
           {weather && (
             <div className="flex flex-col w-full lg:w-3/4 gap-8">
               <Card className="shadow-lg">
@@ -253,14 +227,30 @@ export default function Weather() {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="p-4 shadow-md rounded-md bg-white text-black">
+
                       <div className="w-full">
                         <TChart data={temperatureData} />
+                        <div className="flex gap-2 mt-4">
+                          <ExportButton 
+                            data={temperatureData} 
+                            filename={`${weather.city.name}_temperature.csv`} 
+                          />
+                        </div>
+
                       </div>
+                      
                       <div className="w-full mt-8">
                         <HChart
                           data={humidityData}
                           dataKey="humidity"
                           strokeColor="#8884d8"
+                        />
+                      </div>
+
+                      <div className="flex gap-2 mt-4">
+                        <ExportButton 
+                          data={humidityData} 
+                          filename={`${weather.city.name}_humidity.csv`} 
                         />
                       </div>
                     </div>
