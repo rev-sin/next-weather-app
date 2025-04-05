@@ -1,7 +1,25 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export const AISearch = ({ query: initialQuery = "" }) => {
+interface AISearchProps {
+  query?: string;
+  city?: string;
+  aqi?: number;
+  category?: string;
+  pollutant?: string;
+  temp?: number;
+  humidity?: number;
+}
+
+export const AISearch = ({
+  query: initialQuery = "",
+  city,
+  aqi,
+  category,
+  pollutant,
+  temp,
+  humidity,
+}: AISearchProps) => {
   const [query, setQuery] = useState(initialQuery);
   const [response, setResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -30,10 +48,20 @@ export const AISearch = ({ query: initialQuery = "" }) => {
       const res = await fetch("/api/weather-ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: `Answer naturally: ${query}` }),
+        body: JSON.stringify({
+          query,
+          city,
+          aqi,
+          category,
+          pollutant,
+          temp,
+          humidity,
+        }),
       });
       const data = await res.json();
-      setResponse(formatResponse(data.response || "Hmm, I couldn't find weather info for that."));
+      setResponse(
+        formatResponse(data.response || "Hmm, I couldn't find weather info for that.")
+      );
     } catch (error) {
       setResponse("Sorry, I'm having trouble connecting. Try again later!");
     } finally {
@@ -73,9 +101,9 @@ export const AISearch = ({ query: initialQuery = "" }) => {
 
       {response && (
         <div className="p-4 bg-white bg-opacity-10 rounded-lg">
-          <div 
+          <div
             className="prose prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: response }} 
+            dangerouslySetInnerHTML={{ __html: response }}
           />
         </div>
       )}

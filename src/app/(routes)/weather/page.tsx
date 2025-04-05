@@ -309,7 +309,16 @@ export default function Weather() {
           <p className="text-white text-opacity-80 text-center">
             Ask about health impacts, safety measures, or pollution details
           </p>
-          <AISearch />
+          <AISearch
+            query=""
+            city={weather?.city?.name}
+            aqi={aqi?.value}
+            category={aqi?.category}
+            pollutant={aqi?.pollutant}
+            temp={weather?.list?.[0]?.main?.temp}
+            humidity={weather?.list?.[0]?.main?.humidity}
+          />
+          
         </div>
       </TransparentPopup>          
 
