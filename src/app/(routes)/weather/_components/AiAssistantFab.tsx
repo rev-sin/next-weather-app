@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, X } from "lucide-react";
 
 export function AiAssistantFab({ aqi }: { aqi: number }) {
   const [advice, setAdvice] = useState("");
@@ -30,8 +30,13 @@ export function AiAssistantFab({ aqi }: { aqi: number }) {
     }
   };
 
+  const clearMessage = () => {
+    setAdvice("");
+    setError("");
+  };
+
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-100">
       <Button
         onClick={getAiTip}
         disabled={loading}
@@ -42,10 +47,18 @@ export function AiAssistantFab({ aqi }: { aqi: number }) {
       </Button>
       
       {(advice || error) && (
-        <div className={`mt-2 p-4 rounded-lg shadow-lg max-w-xs ${error ? "bg-red-50 text-red-800" : "bg-blue-50 text-blue-800"}`}>
+        <div className={`relative mt-2 p-4 rounded-lg shadow-lg max-w-xs ${error ? "bg-red-50 text-red-800" : "bg-blue-50 text-blue-800"}`}>
+          <button
+            onClick={clearMessage}
+            className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+            aria-label="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
           {error || advice}
         </div>
       )}
+      
     </div>
   );
 }

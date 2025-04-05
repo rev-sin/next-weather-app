@@ -1,40 +1,52 @@
-'use client';
+"use client";
+import { useState, useEffect } from "react";
 
-import { useState } from 'react';
-
-export const AISearch = () => {
-  const [query, setQuery] = useState('');
-  const [response, setResponse] = useState('');
+export const AISearch = ({ query: initialQuery = "" }) => {
+  const [query, setQuery] = useState(initialQuery);
+  const [response, setResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const predefinedQuestions = [
-    "What's the weather forecast for tomorrow?",
-    "Will it rain this weekend?",
-    "How's the air quality today?",
-    "What should I wear for the current weather?"
+    "What's the weather looking like tomorrow?",
+    "Will I need an umbrella this weekend?",
+    "How's the air quality right now?",
+    "What should I wear today?",
   ];
+
+  const formatResponse = (text: string) => {
+    return text
+      .replace(/\n/g, '<br/>')
+      .replace(/- (.*?)(<br>|$)/g, '• $1<br/>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>');
+  };
 
   const handleSearch = async () => {
     if (!query) return;
-    
     setIsLoading(true);
+    setResponse("");
+
     try {
-      const res = await fetch('/api/weather-ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query })
+      const res = await fetch("/api/weather-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: `Answer naturally: ${query}` }),
       });
       const data = await res.json();
-      setResponse(data.response || "No response received");
+      setResponse(formatResponse(data.response || "Hmm, I couldn't find weather info for that."));
     } catch (error) {
-      setResponse('Error fetching AI response');
+      setResponse("Sorry, I'm having trouble connecting. Try again later!");
     } finally {
       setIsLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (initialQuery) handleSearch();
+  }, [initialQuery]);
+
   return (
-    <div className="space-y-4 text-white">
+    <div className="space-y-6 text-white">
       <div className="relative">
         <input
           type="text"
@@ -48,13 +60,23 @@ export const AISearch = () => {
           disabled={isLoading}
           className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-30 hover:bg-opacity-40 p-1 rounded-md"
         >
-          {isLoading ? '...' : '→'}
+          {isLoading ? "..." : "→"}
         </button>
       </div>
 
+      {isLoading && (
+        <div className="p-4 flex items-center space-x-2">
+          <div className="animate-pulse h-2 w-2 bg-white rounded-full"></div>
+          <span>Getting your weather info...</span>
+        </div>
+      )}
+
       {response && (
-        <div className="p-4 bg-white bg-opacity-10 rounded-lg animate-fade-in">
-          <p>{response}</p>
+        <div className="p-4 bg-white bg-opacity-10 rounded-lg">
+          <div 
+            className="prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: response }} 
+          />
         </div>
       )}
 
@@ -78,4 +100,3 @@ export const AISearch = () => {
     </div>
   );
 };
-
