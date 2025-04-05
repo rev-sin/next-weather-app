@@ -18,7 +18,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       });
     }
   }, []);
-
+1
   return (
     <PHProvider client={posthog}>
       <PostHogPageView />
