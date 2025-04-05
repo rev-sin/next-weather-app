@@ -1,37 +1,43 @@
-"use client";
+import React from "react";
+import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
 
-import { useEffect } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+type WeatherMapProps = {
+  center: {
+    lat: number;
+    lon: number;
+  };
+  temperature: number;
+};
 
-const  WeatherMap = () => {
-  useEffect(() => {
-    const mapContainer = document.getElementById("map");
-    if (!mapContainer) {
-      console.error("Map container not found.");
-      return;
-    }
+const WeatherMap: React.FC<WeatherMapProps> = ({ center, temperature }) => {
+  const getColorFromTemp = (temp: number) => {
+    if (temp < 10) return "#00f";
+    if (temp < 25) return "#0f0";
+    return "#f00";
+  };
 
-    const map = L.map("map").setView([20, 78], 5);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
-
-    L.tileLayer(
-      `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY}`,
-      {
-        attribution: "&copy; OpenWeatherMap",
-      }
-    ).addTo(map);
-
-    return () => {
-      map.remove();
-    };
-  }, []);
-
-  return <div id="map" style={{ width: "100%", height: "500px", zIndex: 0 }}></div>;
+  return (
+    <MapContainer
+      center={[center.lat, center.lon]}
+      zoom={8}
+      scrollWheelZoom={false}
+      style={{ height: "400px", width: "100%", zIndex: 0 }}
+    >
+      <TileLayer
+      attribution='&copy; OpenStreetMap contributors'
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <CircleMarker
+      center={[center.lat, center.lon]}
+      radius={20}
+      pathOptions={{ color: getColorFromTemp(temperature) }}
+      >
+      <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
+        {`${temperature}°C`}
+      </Tooltip>
+      </CircleMarker>
+    </MapContainer>
+  );
 };
 
 export default WeatherMap;

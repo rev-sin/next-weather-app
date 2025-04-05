@@ -15,25 +15,18 @@ import HChart from "@/app/(routes)/weather/_components/HChart";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import { AqiCard } from "./_components/AqiCard";
-// app/(routes)/weather/page.tsx
 import ExportButton from "@/app/(routes)/weather/_components/ExportButton";
 import { AiAssistantFab } from "./_components/AiAssistantFab";
 import { TransparentPopup } from "./_components/TransparentPopup";
 import { AISearch } from "./_components/AISearch";
 
+const WeatherMap = dynamic(
+  () => import("@/app/(routes)/weather/_actions/WeatherMap"),
+  { ssr: false }
+);
 
 export default function Weather() {
-
-  
-  const WeatherMap = dynamic(
-    () => import("@/app/(routes)/weather/_actions/WeatherMap"),
-    {
-      ssr: false,
-    }
-  );
-
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [error, setError] = useState("");
@@ -49,8 +42,11 @@ export default function Weather() {
     pollutant: string;
     category: string;
   } | null>(null);
-
-  const [advice, setAdvice] = useState<string>("");
+  const [mapData, setMapData] = useState<{
+    lat: number;
+    lon: number;
+    temp: number;
+  } | null>(null);
 
   const handleGetWeather = async () => {
     setLoading(true);
@@ -66,6 +62,7 @@ export default function Weather() {
         setTemperatureData([]);
         setHumidityData([]);
         setAqi(null);
+        setMapData(null);
         setLoading(false);
         return;
       }
@@ -81,6 +78,7 @@ export default function Weather() {
         setTemperatureData([]);
         setHumidityData([]);
         setAqi(null);
+        setMapData(null);
         setLoading(false);
         return;
       }
@@ -100,11 +98,17 @@ export default function Weather() {
       setTemperatureData(tempData);
       setHumidityData(humData);
 
+      setMapData({
+        lat: geoData.lat,
+        lon: geoData.lon,
+        temp: weatherResult.data?.list?.[0]?.main?.temp || 0,
+      });
+
       const aqiResult = await fetchAqiData(
         weatherResult.data?.city.coord.lat ?? 0,
         weatherResult.data?.city.coord.lon ?? 0
       );
-  
+
       if (aqiResult.error) {
         setError(aqiResult.error);
         setAqi(null);
@@ -112,19 +116,17 @@ export default function Weather() {
         setAqi({
           value: aqiResult.data.epaAqi,
           pollutant: aqiResult.data.mainPollutant,
-          category: aqiResult.data.category
+          category: aqiResult.data.category,
         });
       }
     } catch (error) {
       setLoading(false);
       setError("An error occurred while fetching weather data.");
       setAqi(null);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
-
-  
 
   return (
     <motion.div
@@ -133,12 +135,9 @@ export default function Weather() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-
-
       <div className="flex flex-col w-full max-w-6xl gap-8 items-center mt-8">
         <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
-          <div className="flex flex-col w-full mt-8 gap-8"> 
-            {/* Left Side */}
+          <div className="flex flex-col w-full mt-8 gap-8">
             <Card className="w-full shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl sm:text-3xl font-semibold">
@@ -212,15 +211,11 @@ export default function Weather() {
                   </CardContent>
                 </Card>
 
-                {aqi && (
-                  <AqiCard aqi={aqi} />
-                )}
-
+                {aqi && <AqiCard aqi={aqi} />}
               </>
             )}
           </div>
-          
-          
+
           {weather && (
             <div className="flex flex-col w-full lg:w-3/4 gap-8">
               <Card className="shadow-lg">
@@ -228,18 +223,6 @@ export default function Weather() {
                   <CardTitle className="text-2xl sm:text-3xl font-semibold">
                     Weather Charts
                   </CardTitle>
-                  
-                  <button
-                        onClick={() => setIsPopupOpen(true)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white text-sm font-medium rounded-full shadow-md transition-all duration-200 transform hover:scale-105"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                        </svg>
-                        Ask AI & Gain Insights
-                      </button>
-                  
-          
                 </CardHeader>
                 <CardContent>
                   <motion.div
@@ -249,18 +232,15 @@ export default function Weather() {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="p-4 shadow-md rounded-md bg-white text-black">
-
                       <div className="w-full">
                         <TChart data={temperatureData} />
                         <div className="flex gap-2 mt-4">
-                          <ExportButton 
-                            data={temperatureData} 
-                            filename={`${weather.city.name}_temperature.csv`} 
+                          <ExportButton
+                            data={temperatureData}
+                            filename={`${weather.city.name}_temperature.csv`}
                           />
                         </div>
-
                       </div>
-
 
                       <div className="w-full mt-8">
                         <HChart
@@ -271,9 +251,9 @@ export default function Weather() {
                       </div>
 
                       <div className="flex gap-2 mt-4">
-                        <ExportButton 
-                          data={humidityData} 
-                          filename={`${weather.city.name}_humidity.csv`} 
+                        <ExportButton
+                          data={humidityData}
+                          filename={`${weather.city.name}_humidity.csv`}
                         />
                       </div>
                     </div>
@@ -288,18 +268,20 @@ export default function Weather() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <WeatherMap />
+                  {mapData && (
+                    <WeatherMap
+                      center={{ lat: mapData.lat, lon: mapData.lon }}
+                      temperature={mapData.temp}
+                    />
+                  )}
                 </CardContent>
               </Card>
 
-
               {aqi && <AiAssistantFab aqi={aqi.value} />}
-
             </div>
           )}
         </div>
       </div>
-
 
       <TransparentPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
         <div className="space-y-6">
@@ -318,10 +300,8 @@ export default function Weather() {
             temp={weather?.list?.[0]?.main?.temp}
             humidity={weather?.list?.[0]?.main?.humidity}
           />
-          
         </div>
-      </TransparentPopup>          
-
+      </TransparentPopup>
     </motion.div>
   );
 }
