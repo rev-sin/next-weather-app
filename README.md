@@ -15,7 +15,7 @@ A realtime environment monitoring system built with passion for Software Enginee
 Monitoring and Analytics - PostHog\
 User Alerts and Notifications - Resend\
 Authentication and User Management - Clerk\
-DNS Provider - .TECH
+DNS Provider - .TECH\
 Serverless Functions - Next
 
 # APIs
