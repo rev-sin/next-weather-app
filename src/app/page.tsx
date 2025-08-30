@@ -18,7 +18,7 @@ export default function HomePage() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col items-center gap-4 w-full mt-20 sm:mt-32">
+
         <Card className="shadow-lg w-full max-w-2xl">
           <CardHeader>
             <CardTitle className="text-3xl sm:text-4xl font-bold text-center">
@@ -118,7 +118,6 @@ export default function HomePage() {
             </CardContent>
           </Card>
         </div>
-      </div>
     </motion.div>
   );
 }

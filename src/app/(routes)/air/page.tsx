@@ -72,57 +72,50 @@ export default function AirPollutionPage() {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16"
+      className="flex flex-col items-center justify-center min-h-screen bg-transparent px-4 sm:px-8 lg:px-24"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      role="region"
+      aria-labelledby="air-heading"
     >
-      <form onSubmit={handleSubmit} className="flex gap-4 w-full max-w-lg">
-        <input
-          type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="Enter city"
-          className="flex-1 p-2 border rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Search
-        </button>
-      </form>
+  <div className="w-4/5 mx-auto flex flex-col items-center">
+        <h1 id="air-heading" className="text-3xl font-bold mb-4 text-center">Air Quality</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 w-full max-w-lg" aria-label="Search city for air pollution data">
+          <label htmlFor="city-input" className="sr-only">City</label>
+          <input
+            id="city-input"
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Enter city"
+            className="flex-1 p-2 border rounded focus:outline focus:outline-blue-500"
+            aria-label="City name"
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline focus:outline-blue-500"
+          >
+            Search
+          </button>
+        </form>
 
-      <div className="flex flex-col w-full max-w-6xl gap-8 items-center mt-4">
-        <Card className="w-full shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl sm:text-3xl font-semibold">
-              Air Pollution Details
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading && <p className="text-center">Loading...</p>}
-            {error && <p className="text-center text-red-600">{error}</p>}
-            {!loading && !error && data && (
-              <motion.div
-                className="flex flex-col gap-4 w-full mt-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="p-4 shadow-md rounded-md bg-white text-black">
-                  <ul className="space-y-1">
-                    {Object.entries(data.components).map(([key, value]) => (
-                      <li key={key}>
-                        <strong>{key.toUpperCase()}:</strong> {value} µg/m³
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </motion.div>
-            )}
-          </CardContent>
-        </Card>
+        <div className="flex flex-col w-full gap-8 items-center mt-4">
+          {loading && <p className="text-center text-blue-600" role="status">Loading...</p>}
+          {error && <p className="text-center text-red-600" role="alert">{error}</p>}
+          {!loading && !error && data && (
+            <div className="w-full break-words whitespace-pre-line overflow-wrap">
+              <ul className="space-y-1">
+                {Object.entries(data.components).map(([key, value]) => (
+                  <li key={key} className="flex justify-between break-words whitespace-pre-line overflow-wrap">
+                    <span className="font-semibold break-words whitespace-pre-line overflow-wrap">{key.toUpperCase()}:</span>
+                    <span className="break-words whitespace-pre-line overflow-wrap">{value} µg/m³</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </motion.div>
   );

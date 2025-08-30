@@ -9,10 +9,14 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border bg-card text-card-foreground shadow",
+      "rounded-2xl border border-white/30 bg-white/10 backdrop-blur-lg shadow-xl text-card-foreground p-4 sm:p-6 transition-all duration-300",
+      "focus:outline-none focus:ring-2 focus:ring-blue-400",
       className
     )}
     {...props}
+    tabIndex={0}
+    role="region"
+    aria-label="Card"
   />
 ));
 Card.displayName = "Card";

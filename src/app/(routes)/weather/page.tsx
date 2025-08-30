@@ -130,48 +130,48 @@ export default function Weather() {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16"
+      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-transparent"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      role="region"
+      aria-labelledby="weather-heading"
     >
-      <div className="flex flex-col w-full max-w-6xl gap-8 items-center mt-8">
+      <h1 id="weather-heading" className="text-3xl font-bold mb-4 text-center">Weather</h1>
+  <div className="w-4/5 mx-auto flex flex-col gap-8 items-center mt-8">
         <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
           <div className="flex flex-col w-full mt-8 gap-8">
-            <Card className="w-full shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl sm:text-3xl font-semibold">
-                  Weather Search
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form
-                  className="flex flex-col gap-4"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleGetWeather();
-                  }}
-                >
-                  <Input
-                    placeholder="Enter city name"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                  />
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full sm:w-auto bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
-                  >
-                    {loading ? "Loading..." : "Get Weather"}
-                  </Button>
-                  {error && <p className="text-red-500 text-center">{error}</p>}
-                </form>
-              </CardContent>
-            </Card>
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleGetWeather();
+              }}
+              aria-label="Search city for weather data"
+            >
+              <label htmlFor="weather-city-input" className="sr-only">City</label>
+              <Input
+                id="weather-city-input"
+                placeholder="Enter city name"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="focus:outline focus:outline-blue-500"
+                aria-label="City name"
+                required
+              />
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full sm:w-auto bg-blue-500 text-white rounded-full hover:bg-blue-600 transition focus:outline focus:outline-blue-500"
+              >
+                {loading ? "Loading..." : "Get Weather"}
+              </Button>
+              {error && <p className="text-red-500 text-center" role="alert">{error}</p>}
+            </form>
 
             {weather && (
               <>
-                <Card className="w-full shadow-lg">
+                <Card className="w-full shadow-lg" role="region" aria-label="Weather details">
                   <CardHeader>
                     <CardTitle className="text-2xl sm:text-3xl font-semibold">
                       Weather Details
@@ -189,22 +189,22 @@ export default function Weather() {
                           {weather.city.name}
                         </h2>
                         <p className="text-lg flex items-center gap-2">
-                          Temperature: {weather.list[0].main.temp}°C
+                          <span className="font-semibold">Temperature:</span> {weather.list[0].main.temp}°C
                         </p>
                         <p className="text-lg flex items-center gap-2">
-                          Weather: {weather.list[0].weather[0].description}
+                          <span className="font-semibold">Weather:</span> {weather.list[0].weather[0].description}
                         </p>
                         <p className="text-lg">
-                          Humidity: {weather.list[0].main.humidity}%
+                          <span className="font-semibold">Humidity:</span> {weather.list[0].main.humidity}%
                         </p>
                         <p className="text-lg">
-                          Wind Speed: {weather.list[0].wind.speed} m/s
+                          <span className="font-semibold">Wind Speed:</span> {weather.list[0].wind.speed} m/s
                         </p>
                         <p className="text-lg">
-                          Pressure: {weather.list[0].main.pressure} hPa
+                          <span className="font-semibold">Pressure:</span> {weather.list[0].main.pressure} hPa
                         </p>
                         <p className="text-lg">
-                          Visibility: {weather.list[0].visibility} meters
+                          <span className="font-semibold">Visibility:</span> {weather.list[0].visibility} meters
                         </p>
                       </div>
                     </motion.div>
