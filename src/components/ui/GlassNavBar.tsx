@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 export default function GlassNavBar() {
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -53,6 +54,13 @@ export default function GlassNavBar() {
 			</div>
 			<div className="flex items-center gap-2">
 				{/* User/account controls placeholder, add auth buttons here if needed */}
+				<SignedOut>
+					<SignInButton />
+					<SignUpButton />
+				</SignedOut>
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
 			</div>
 			{/* Mobile menu button */}
 			<div className="md:hidden flex items-center">
