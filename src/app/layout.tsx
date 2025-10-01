@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Header from "../components/ui/layout/header";
-import GlassNavBarWrapper from "@/components/ui/GlassNavBarWrapper";
 import { ClerkProvider } from "@clerk/nextjs";
-import { PostHogProvider } from "./providers";
-
+import GlassNavBarWrapper from "@/components/ui/GlassNavBarWrapper";
 // app/layout.tsx
 import { Toaster } from "@/components/ui/toaster";
 
@@ -54,7 +51,6 @@ export default function RootLayout({
 					<GlassNavBarWrapper />
 					<main
 						id="main-content"
-						role="main"
 						className="flex-1 flex flex-col items-center justify-center px-2 py-6 w-full max-w-3xl mx-auto"
 					>
 						{children}

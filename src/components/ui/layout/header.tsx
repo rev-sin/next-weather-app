@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import {
-	SignInButton,
-	SignUpButton,
 	SignedIn,
 	SignedOut,
+	SignInButton,
+	SignUpButton,
 	UserButton,
 } from "@clerk/nextjs";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function Header() {
 	const [menuOpen, setMenuOpen] = useState(false);

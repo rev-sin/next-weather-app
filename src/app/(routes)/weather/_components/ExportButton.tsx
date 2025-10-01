@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { useState } from "react";
 import { convertToCSV } from "@/app/(routes)/weather/_actions/exportData";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 
 interface ExportButtonProps {
@@ -37,7 +37,7 @@ export default function ExportButton({ data, filename }: ExportButtonProps) {
 			document.body.removeChild(link);
 
 			toast({ title: "Success", description: `${filename} downloaded!` });
-		} catch (error) {
+		} catch (_error) {
 			toast({
 				title: "Error",
 				description: "Export failed",

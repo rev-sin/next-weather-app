@@ -1,9 +1,9 @@
 // app/api/geo/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
 	const city = req.nextUrl.searchParams.get("city");
-	const apiKey = process.env.OPENWEATHER_API_KEY;
+	const _apiKey = process.env.OPENWEATHER_API_KEY;
 
 	if (!city) {
 		return NextResponse.json({ error: "City is required" }, { status: 400 });
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
 			lat: json[0].lat,
 			lon: json[0].lon,
 		});
-	} catch (error) {
+	} catch (_error) {
 		return NextResponse.json(
 			{ error: "Failed to fetch location" },
 			{ status: 500 },

@@ -1,10 +1,7 @@
 "use client";
-import { useState } from "react";
-
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { AISearch } from "./AISearch";
-import { TransparentPopup } from "./TransparentPopup";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function PollutantIcon({ pollutant }: { pollutant: string }) {
 	const icons = {
@@ -49,51 +46,45 @@ export function AqiCard({
 }: {
 	aqi: { value: number; pollutant: string; category: string };
 }) {
-	const [isPopupOpen, setIsPopupOpen] = useState(false);
+	const [_isPopupOpen, _setIsPopupOpen] = useState(false);
 
 	return (
-		<>
-			<Card className="w-full shadow-lg">
-				<CardHeader>
-					<CardTitle className="text-2xl sm:text-3xl font-semibold">
-						Air Quality Index (US EPA)
-					</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<motion.div
-						className="flex flex-col gap-4 w-full mt-4"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5 }}
+		<Card className="w-full shadow-lg">
+			<CardHeader>
+				<CardTitle className="text-2xl sm:text-3xl font-semibold">
+					Air Quality Index (US EPA)
+				</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<motion.div
+					className="flex flex-col gap-4 w-full mt-4"
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5 }}
+				>
+					<div
+						className={`p-6 rounded-lg ${AQI_COLORS[aqi.category as keyof typeof AQI_COLORS]} text-white`}
 					>
-						<div
-							className={`p-6 rounded-lg ${AQI_COLORS[aqi.category as keyof typeof AQI_COLORS]} text-white`}
-						>
-							<div className="grid gap-3">
-								<p className="text-2xl font-bold">AQI: {aqi.value}</p>
+						<div className="grid gap-3">
+							<p className="text-2xl font-bold">AQI: {aqi.value}</p>
 
-								{/* Integrated Pollutant Display */}
-								<div className="flex items-center gap-2 text-lg">
-									<span>Main Pollutant:</span>
-									<PollutantIcon pollutant={aqi.pollutant} />
-									<span className="font-medium">
-										{aqi.pollutant.replace("_", " ").toUpperCase()}
-									</span>
-								</div>
-
-								<p className="text-lg font-medium">Category: {aqi.category}</p>
-								<p className="text-sm opacity-90 mt-2">
-									{
-										HEALTH_MESSAGES[
-											aqi.category as keyof typeof HEALTH_MESSAGES
-										]
-									}
-								</p>
+							{/* Integrated Pollutant Display */}
+							<div className="flex items-center gap-2 text-lg">
+								<span>Main Pollutant:</span>
+								<PollutantIcon pollutant={aqi.pollutant} />
+								<span className="font-medium">
+									{aqi.pollutant.replace("_", " ").toUpperCase()}
+								</span>
 							</div>
+
+							<p className="text-lg font-medium">Category: {aqi.category}</p>
+							<p className="text-sm opacity-90 mt-2">
+								{HEALTH_MESSAGES[aqi.category as keyof typeof HEALTH_MESSAGES]}
+							</p>
 						</div>
-					</motion.div>
-				</CardContent>
-			</Card>
-		</>
+					</div>
+				</motion.div>
+			</CardContent>
+		</Card>
 	);
 }

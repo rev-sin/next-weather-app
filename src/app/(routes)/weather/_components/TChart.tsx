@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import {
-	LineChart,
-	Line,
-	BarChart,
 	Bar,
+	BarChart,
+	CartesianGrid,
+	Legend,
+	Line,
+	LineChart,
+	ResponsiveContainer,
+	Tooltip,
 	XAxis,
 	YAxis,
-	CartesianGrid,
-	Tooltip,
-	Legend,
-	ResponsiveContainer,
 } from "recharts";
 import { Button } from "../../../../components/ui/button";
 import {
 	Select,
-	SelectTrigger,
 	SelectContent,
 	SelectItem,
+	SelectTrigger,
 	SelectValue,
 } from "../../../../components/ui/select";
 

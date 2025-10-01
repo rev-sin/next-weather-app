@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
 	const lat = req.nextUrl.searchParams.get("lat");
 	const lon = req.nextUrl.searchParams.get("lon");
-	const apiKey = process.env.OPENWEATHER_API_KEY;
+	const _apiKey = process.env.OPENWEATHER_API_KEY;
 
 	if (!lat || !lon) {
 		return NextResponse.json(
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 		const res = await fetch(url);
 		const data = await res.json();
 		return NextResponse.json(data);
-	} catch (error) {
+	} catch (_error) {
 		return NextResponse.json(
 			{ error: "Failed to fetch pollution data" },
 			{ status: 500 },

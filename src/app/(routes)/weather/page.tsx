@@ -1,24 +1,24 @@
 "use client";
 
+import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
 	fetchAqiData,
 	getWeatherDataByCoords,
 } from "@/app/(routes)/weather/_actions/WeatherData";
-import { WeatherData } from "@/types/weather";
-import { motion } from "framer-motion";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-import TChart from "@/app/(routes)/weather/_components/TChart";
 import HChart from "@/app/(routes)/weather/_components/HChart";
-import dynamic from "next/dynamic";
+import TChart from "@/app/(routes)/weather/_components/TChart";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import type { WeatherData } from "@/types/weather";
 import "leaflet/dist/leaflet.css";
-import { AqiCard } from "./_components/AqiCard";
 import ExportButton from "@/app/(routes)/weather/_components/ExportButton";
-import { AiAssistantFab } from "./_components/AiAssistantFab";
-import { TransparentPopup } from "./_components/TransparentPopup";
 import { AISearch } from "./_components/AISearch";
+import { AiAssistantFab } from "./_components/AiAssistantFab";
+import { AqiCard } from "./_components/AqiCard";
+import { TransparentPopup } from "./_components/TransparentPopup";
 
 const WeatherMap = dynamic(
 	() => import("@/app/(routes)/weather/_actions/WeatherMap"),
@@ -119,7 +119,7 @@ export default function Weather() {
 					category: aqiResult.data.category,
 				});
 			}
-		} catch (error) {
+		} catch (_error) {
 			setLoading(false);
 			setError("An error occurred while fetching weather data.");
 			setAqi(null);

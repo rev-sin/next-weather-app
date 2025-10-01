@@ -1,10 +1,10 @@
-import { EmailTemplate } from "@/app/api/send/_components/email-template";
-import { Resend } from "resend";
 import { currentUser } from "@clerk/nextjs/server";
+import { Resend } from "resend";
+import { EmailTemplate } from "@/app/api/send/_components/email-template";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(request: Request) {
+export async function POST(_request: Request) {
 	const user = await currentUser();
 	console.log(user);
 	try {

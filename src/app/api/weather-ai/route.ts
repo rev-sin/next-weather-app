@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 				{ status: 400 },
 			);
 		}
-	} catch (e) {
+	} catch (_e) {
 		return NextResponse.json(
 			{ error: "Invalid request body" },
 			{ status: 400 },

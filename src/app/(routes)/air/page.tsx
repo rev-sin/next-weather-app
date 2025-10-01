@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 type PollutionData = {
 	components: {
@@ -63,7 +62,7 @@ export default function AirPollutionPage() {
 		if (coords) {
 			fetchAirData(coords.lat, coords.lon);
 		}
-	}, [coords]);
+	}, [coords, fetchAirData]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();

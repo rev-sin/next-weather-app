@@ -1,8 +1,8 @@
-import emailbroadcasttemplate from "./_components/emailbroadcasttemplate";
-import { Resend } from "resend";
 import { clerkClient } from "@clerk/clerk-sdk-node";
+import { type NextRequest, NextResponse } from "next/server";
 import React from "react";
-import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+import emailbroadcasttemplate from "./_components/emailbroadcasttemplate";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

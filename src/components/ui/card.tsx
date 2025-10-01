@@ -14,7 +14,6 @@ const Card = React.forwardRef<
 			className,
 		)}
 		{...props}
-		tabIndex={0}
 		role="region"
 		aria-label="Card"
 	/>

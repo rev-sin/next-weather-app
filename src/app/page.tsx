@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
 	Card,
-	CardHeader,
-	CardTitle,
 	CardContent,
 	CardDescription,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
 
 export default function HomePage() {

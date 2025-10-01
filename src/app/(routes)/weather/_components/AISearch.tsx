@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface AISearchProps {
 	query?: string;
@@ -64,7 +64,7 @@ export const AISearch = ({
 					data.response || "Hmm, I couldn't find weather info for that.",
 				),
 			);
-		} catch (error) {
+		} catch (_error) {
 			setResponse("Sorry, I'm having trouble connecting. Try again later!");
 		} finally {
 			setIsLoading(false);
@@ -73,7 +73,7 @@ export const AISearch = ({
 
 	useEffect(() => {
 		if (initialQuery) handleSearch();
-	}, [initialQuery]);
+	}, [initialQuery, handleSearch]);
 
 	return (
 		<div className="space-y-6 text-white">

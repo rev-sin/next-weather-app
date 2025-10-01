@@ -1,8 +1,8 @@
 "use client";
 
+import { Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, X } from "lucide-react";
 
 export function AiAssistantFab({ aqi }: { aqi: number }) {
 	const [advice, setAdvice] = useState("");
@@ -23,7 +23,7 @@ export function AiAssistantFab({ aqi }: { aqi: number }) {
 
 			const data = await res.json();
 			setAdvice(data.advice);
-		} catch (err) {
+		} catch (_err) {
 			setError("Failed to get advice");
 		} finally {
 			setLoading(false);

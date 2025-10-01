@@ -1,5 +1,5 @@
-import React from "react";
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
+import type React from "react";
+import { CircleMarker, MapContainer, TileLayer, Tooltip } from "react-leaflet";
 
 type WeatherMapProps = {
 	center: {

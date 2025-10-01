@@ -1,7 +1,7 @@
 "use server";
 
-import { newsSchema } from "./schema";
 import { z } from "zod";
+import { newsSchema } from "./schema";
 
 export async function getClimateNews(): Promise<{
 	data?: any;

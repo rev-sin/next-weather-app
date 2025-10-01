@@ -1,8 +1,7 @@
-import { GET, POST } from "./broadcastRoute";
 import { clerkClient } from "@clerk/clerk-sdk-node";
+import type { NextRequest } from "next/server";
 import { Resend } from "resend";
-import React from "react";
-import { NextRequest, NextResponse } from "next/server";
+import { GET, POST } from "./broadcastRoute";
 
 jest.mock("@clerk/clerk-sdk-node", () => ({
 	clerkClient: {

@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 		return NextResponse.json({
 			advice: completion.choices[0]?.message?.content || "No response",
 		});
-	} catch (error) {
+	} catch (_error) {
 		return NextResponse.json(
 			{ error: "AI service unavailable" },
 			{ status: 500 },

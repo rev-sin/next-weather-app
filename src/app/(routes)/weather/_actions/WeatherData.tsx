@@ -1,8 +1,8 @@
 "use server";
 
-import { WeatherData } from "@/types/weather";
-import { weatherSchema, aqiSchema } from "./schema";
 import { z } from "zod";
+import type { WeatherData } from "@/types/weather";
+import { aqiSchema, weatherSchema } from "./schema";
 
 export async function fetchAqiData(
 	lat: number,

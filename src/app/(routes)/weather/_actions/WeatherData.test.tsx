@@ -1,6 +1,6 @@
-import { fetchAqiData } from "./WeatherData";
-import { aqiSchema } from "./schema";
 import { z } from "zod";
+import { aqiSchema } from "./schema";
+import { fetchAqiData } from "./WeatherData";
 
 global.fetch = jest.fn();
 

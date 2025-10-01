@@ -1,6 +1,6 @@
+import { z } from "zod";
 import { getClimateNews } from "./Notification";
 import { newsSchema } from "./schema";
-import { z } from "zod";
 
 global.fetch = jest.fn();
 
