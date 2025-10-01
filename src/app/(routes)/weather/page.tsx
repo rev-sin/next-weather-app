@@ -1,319 +1,349 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  fetchAqiData,
-  getWeatherDataByCoords,
-} from "@/app/(routes)/weather/_actions/WeatherData";
-import { WeatherData } from "@/types/weather";
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-import TChart from "@/app/(routes)/weather/_components/TChart";
-import HChart from "@/app/(routes)/weather/_components/HChart";
 import dynamic from "next/dynamic";
+import { useState } from "react";
+import {
+	fetchAqiData,
+	getWeatherDataByCoords,
+} from "@/app/(routes)/weather/_actions/WeatherData";
+import HChart from "@/app/(routes)/weather/_components/HChart";
+import TChart from "@/app/(routes)/weather/_components/TChart";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import type { WeatherData } from "@/types/weather";
 import "leaflet/dist/leaflet.css";
-import { AqiCard } from "./_components/AqiCard";
 import ExportButton from "@/app/(routes)/weather/_components/ExportButton";
-import { AiAssistantFab } from "./_components/AiAssistantFab";
-import { TransparentPopup } from "./_components/TransparentPopup";
 import { AISearch } from "./_components/AISearch";
+import { AiAssistantFab } from "./_components/AiAssistantFab";
+import { AqiCard } from "./_components/AqiCard";
+import { TransparentPopup } from "./_components/TransparentPopup";
 
 const WeatherMap = dynamic(
-  () => import("@/app/(routes)/weather/_actions/WeatherMap"),
-  { ssr: false }
+	() => import("@/app/(routes)/weather/_actions/WeatherMap"),
+	{ ssr: false },
 );
 
 export default function Weather() {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [city, setCity] = useState("");
-  const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [temperatureData, setTemperatureData] = useState<
-    { time: string; temp: number }[]
-  >([]);
-  const [humidityData, setHumidityData] = useState<
-    { time: string; humidity: number }[]
-  >([]);
-  const [aqi, setAqi] = useState<{
-    value: number;
-    pollutant: string;
-    category: string;
-  } | null>(null);
-  const [mapData, setMapData] = useState<{
-    lat: number;
-    lon: number;
-    temp: number;
-  } | null>(null);
+	const [isPopupOpen, setIsPopupOpen] = useState(false);
+	const [city, setCity] = useState("");
+	const [weather, setWeather] = useState<WeatherData | null>(null);
+	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [temperatureData, setTemperatureData] = useState<
+		{ time: string; temp: number }[]
+	>([]);
+	const [humidityData, setHumidityData] = useState<
+		{ time: string; humidity: number }[]
+	>([]);
+	const [aqi, setAqi] = useState<{
+		value: number;
+		pollutant: string;
+		category: string;
+	} | null>(null);
+	const [mapData, setMapData] = useState<{
+		lat: number;
+		lon: number;
+		temp: number;
+	} | null>(null);
 
-  const handleGetWeather = async () => {
-    setLoading(true);
-    setError("");
+	const handleGetWeather = async () => {
+		setLoading(true);
+		setError("");
 
-    try {
-      const geoRes = await fetch(`/api/geo?city=${city}`);
-      const geoData = await geoRes.json();
+		try {
+			const geoRes = await fetch(`/api/geo?city=${city}`);
+			const geoData = await geoRes.json();
 
-      if (!geoRes.ok || !geoData.lat || !geoData.lon) {
-        setError("Could not fetch location for the city.");
-        setWeather(null);
-        setTemperatureData([]);
-        setHumidityData([]);
-        setAqi(null);
-        setMapData(null);
-        setLoading(false);
-        return;
-      }
+			if (!geoRes.ok || !geoData.lat || !geoData.lon) {
+				setError("Could not fetch location for the city.");
+				setWeather(null);
+				setTemperatureData([]);
+				setHumidityData([]);
+				setAqi(null);
+				setMapData(null);
+				setLoading(false);
+				return;
+			}
 
-      const weatherResult = await getWeatherDataByCoords(
-        geoData.lat,
-        geoData.lon
-      );
+			const weatherResult = await getWeatherDataByCoords(
+				geoData.lat,
+				geoData.lon,
+			);
 
-      if (weatherResult.error) {
-        setError("Failed to fetch weather data. Please try again.");
-        setWeather(null);
-        setTemperatureData([]);
-        setHumidityData([]);
-        setAqi(null);
-        setMapData(null);
-        setLoading(false);
-        return;
-      }
+			if (weatherResult.error) {
+				setError("Failed to fetch weather data. Please try again.");
+				setWeather(null);
+				setTemperatureData([]);
+				setHumidityData([]);
+				setAqi(null);
+				setMapData(null);
+				setLoading(false);
+				return;
+			}
 
-      setWeather(weatherResult.data || null);
+			setWeather(weatherResult.data || null);
 
-      const tempData =
-        weatherResult.data?.list.map((item: any) => ({
-          time: item.dt_txt,
-          temp: item.main.temp,
-        })) || [];
-      const humData =
-        weatherResult.data?.list.map((item: any) => ({
-          time: item.dt_txt,
-          humidity: item.main.humidity,
-        })) || [];
-      setTemperatureData(tempData);
-      setHumidityData(humData);
+			const tempData =
+				weatherResult.data?.list.map((item: any) => ({
+					time: item.dt_txt,
+					temp: item.main.temp,
+				})) || [];
+			const humData =
+				weatherResult.data?.list.map((item: any) => ({
+					time: item.dt_txt,
+					humidity: item.main.humidity,
+				})) || [];
+			setTemperatureData(tempData);
+			setHumidityData(humData);
 
-      setMapData({
-        lat: geoData.lat,
-        lon: geoData.lon,
-        temp: weatherResult.data?.list?.[0]?.main?.temp || 0,
-      });
+			setMapData({
+				lat: geoData.lat,
+				lon: geoData.lon,
+				temp: weatherResult.data?.list?.[0]?.main?.temp || 0,
+			});
 
-      const aqiResult = await fetchAqiData(
-        weatherResult.data?.city.coord.lat ?? 0,
-        weatherResult.data?.city.coord.lon ?? 0
-      );
+			const aqiResult = await fetchAqiData(
+				weatherResult.data?.city.coord.lat ?? 0,
+				weatherResult.data?.city.coord.lon ?? 0,
+			);
 
-      if (aqiResult.error) {
-        setError(aqiResult.error);
-        setAqi(null);
-      } else if (aqiResult.data) {
-        setAqi({
-          value: aqiResult.data.epaAqi,
-          pollutant: aqiResult.data.mainPollutant,
-          category: aqiResult.data.category,
-        });
-      }
-    } catch (error) {
-      setLoading(false);
-      setError("An error occurred while fetching weather data.");
-      setAqi(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+			if (aqiResult.error) {
+				setError(aqiResult.error);
+				setAqi(null);
+			} else if (aqiResult.data) {
+				setAqi({
+					value: aqiResult.data.epaAqi,
+					pollutant: aqiResult.data.mainPollutant,
+					category: aqiResult.data.category,
+				});
+			}
+		} catch (_error) {
+			setLoading(false);
+			setError("An error occurred while fetching weather data.");
+			setAqi(null);
+		} finally {
+			setLoading(false);
+		}
+	};
 
-  return (
-    <motion.div
-      className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-transparent"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      role="region"
-      aria-labelledby="weather-heading"
-    >
-      <h1 id="weather-heading" className="text-3xl font-bold mb-4 text-center">Weather</h1>
-  <div className="w-4/5 mx-auto flex flex-col gap-8 items-center mt-8">
-        <div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
-          <div className="flex flex-col w-full mt-8 gap-8">
-            <form
-              className="flex flex-col gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleGetWeather();
-              }}
-              aria-label="Search city for weather data"
-            >
-              <label htmlFor="weather-city-input" className="sr-only">City</label>
-              <Input
-                id="weather-city-input"
-                placeholder="Enter city name"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="focus:outline focus:outline-blue-500"
-                aria-label="City name"
-                required
-              />
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full sm:w-auto bg-blue-500 text-white rounded-full hover:bg-blue-600 transition focus:outline focus:outline-blue-500"
-              >
-                {loading ? "Loading..." : "Get Weather"}
-              </Button>
-              {error && <p className="text-red-500 text-center" role="alert">{error}</p>}
-            </form>
+	return (
+		<motion.div
+			className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 pb-20 gap-8 sm:gap-16 bg-transparent"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.5 }}
+			role="region"
+			aria-labelledby="weather-heading"
+		>
+			<h1 id="weather-heading" className="text-3xl font-bold mb-4 text-center">
+				Weather
+			</h1>
+			<div className="w-4/5 mx-auto flex flex-col gap-8 items-center mt-8">
+				<div className="flex flex-col w-full gap-8 lg:flex-row mt-8">
+					<div className="flex flex-col w-full mt-8 gap-8">
+						<form
+							className="flex flex-col gap-4"
+							onSubmit={(e) => {
+								e.preventDefault();
+								handleGetWeather();
+							}}
+							aria-label="Search city for weather data"
+						>
+							<label htmlFor="weather-city-input" className="sr-only">
+								City
+							</label>
+							<Input
+								id="weather-city-input"
+								placeholder="Enter city name"
+								value={city}
+								onChange={(e) => setCity(e.target.value)}
+								className="focus:outline focus:outline-blue-500"
+								aria-label="City name"
+								required
+							/>
+							<Button
+								type="submit"
+								disabled={loading}
+								className="w-full sm:w-auto bg-blue-500 text-white rounded-full hover:bg-blue-600 transition focus:outline focus:outline-blue-500"
+							>
+								{loading ? "Loading..." : "Get Weather"}
+							</Button>
+							{error && (
+								<p className="text-red-500 text-center" role="alert">
+									{error}
+								</p>
+							)}
+						</form>
 
-            {weather && (
-              <>
-                <Card className="w-full shadow-lg" role="region" aria-label="Weather details">
-                  <CardHeader>
-                    <CardTitle className="text-2xl sm:text-3xl font-semibold">
-                      Weather Details
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <motion.div
-                      className="flex flex-col gap-4 w-full mt-4"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <div className="p-4 shadow-md rounded-md bg-white text-black">
-                        <h2 className="text-2xl font-bold">
-                          {weather.city.name}
-                        </h2>
-                        <p className="text-lg flex items-center gap-2">
-                          <span className="font-semibold">Temperature:</span> {weather.list[0].main.temp}°C
-                        </p>
-                        <p className="text-lg flex items-center gap-2">
-                          <span className="font-semibold">Weather:</span> {weather.list[0].weather[0].description}
-                        </p>
-                        <p className="text-lg">
-                          <span className="font-semibold">Humidity:</span> {weather.list[0].main.humidity}%
-                        </p>
-                        <p className="text-lg">
-                          <span className="font-semibold">Wind Speed:</span> {weather.list[0].wind.speed} m/s
-                        </p>
-                        <p className="text-lg">
-                          <span className="font-semibold">Pressure:</span> {weather.list[0].main.pressure} hPa
-                        </p>
-                        <p className="text-lg">
-                          <span className="font-semibold">Visibility:</span> {weather.list[0].visibility} meters
-                        </p>
-                      </div>
-                    </motion.div>
-                  </CardContent>
-                </Card>
+						{weather && (
+							<>
+								<Card
+									className="w-full shadow-lg"
+									role="region"
+									aria-label="Weather details"
+								>
+									<CardHeader>
+										<CardTitle className="text-2xl sm:text-3xl font-semibold">
+											Weather Details
+										</CardTitle>
+									</CardHeader>
+									<CardContent>
+										<motion.div
+											className="flex flex-col gap-4 w-full mt-4"
+											initial={{ opacity: 0, y: 20 }}
+											animate={{ opacity: 1, y: 0 }}
+											transition={{ duration: 0.5 }}
+										>
+											<div className="p-4 shadow-md rounded-md bg-white text-black">
+												<h2 className="text-2xl font-bold">
+													{weather.city.name}
+												</h2>
+												<p className="text-lg flex items-center gap-2">
+													<span className="font-semibold">Temperature:</span>{" "}
+													{weather.list[0].main.temp}°C
+												</p>
+												<p className="text-lg flex items-center gap-2">
+													<span className="font-semibold">Weather:</span>{" "}
+													{weather.list[0].weather[0].description}
+												</p>
+												<p className="text-lg">
+													<span className="font-semibold">Humidity:</span>{" "}
+													{weather.list[0].main.humidity}%
+												</p>
+												<p className="text-lg">
+													<span className="font-semibold">Wind Speed:</span>{" "}
+													{weather.list[0].wind.speed} m/s
+												</p>
+												<p className="text-lg">
+													<span className="font-semibold">Pressure:</span>{" "}
+													{weather.list[0].main.pressure} hPa
+												</p>
+												<p className="text-lg">
+													<span className="font-semibold">Visibility:</span>{" "}
+													{weather.list[0].visibility} meters
+												</p>
+											</div>
+										</motion.div>
+									</CardContent>
+								</Card>
 
-                {aqi && <AqiCard aqi={aqi} />}
-              </>
-            )}
-          </div>
+								{aqi && <AqiCard aqi={aqi} />}
+							</>
+						)}
+					</div>
 
-          {weather && (
-            <div className="flex flex-col w-full lg:w-3/4 gap-8">
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-2xl sm:text-3xl font-semibold">
-                    Weather Charts
-                  </CardTitle>
+					{weather && (
+						<div className="flex flex-col w-full lg:w-3/4 gap-8">
+							<Card className="shadow-lg">
+								<CardHeader>
+									<CardTitle className="text-2xl sm:text-3xl font-semibold">
+										Weather Charts
+									</CardTitle>
 
-                  <button
-                        onClick={() => setIsPopupOpen(true)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white text-sm font-medium rounded-full shadow-md transition-all duration-200 transform hover:scale-105"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                        </svg>
-                        Ask AI & Gain Insights
-                  </button>
+									<button
+										onClick={() => setIsPopupOpen(true)}
+										className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white text-sm font-medium rounded-full shadow-md transition-all duration-200 transform hover:scale-105"
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											className="h-4 w-4"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth={2}
+												d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+											/>
+										</svg>
+										Ask AI & Gain Insights
+									</button>
+								</CardHeader>
+								<CardContent>
+									<motion.div
+										className="flex flex-col gap-4 w-full"
+										initial={{ opacity: 0, y: 20 }}
+										animate={{ opacity: 1, y: 0 }}
+										transition={{ duration: 0.5 }}
+									>
+										<div className="p-4 shadow-md rounded-md bg-white text-black">
+											<div className="w-full">
+												<TChart data={temperatureData} />
+												<div className="flex gap-2 mt-4">
+													<ExportButton
+														data={temperatureData}
+														filename={`${weather.city.name}_temperature.csv`}
+													/>
+												</div>
+											</div>
 
-                  
-                </CardHeader>
-                <CardContent>
-                  <motion.div
-                    className="flex flex-col gap-4 w-full"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <div className="p-4 shadow-md rounded-md bg-white text-black">
-                      <div className="w-full">
-                        <TChart data={temperatureData} />
-                        <div className="flex gap-2 mt-4">
-                          <ExportButton
-                            data={temperatureData}
-                            filename={`${weather.city.name}_temperature.csv`}
-                          />
-                        </div>
-                      </div>
+											<div className="w-full mt-8">
+												<HChart
+													data={humidityData}
+													dataKey="humidity"
+													strokeColor="#8884d8"
+												/>
+											</div>
 
-                      <div className="w-full mt-8">
-                        <HChart
-                          data={humidityData}
-                          dataKey="humidity"
-                          strokeColor="#8884d8"
-                        />
-                      </div>
+											<div className="flex gap-2 mt-4">
+												<ExportButton
+													data={humidityData}
+													filename={`${weather.city.name}_humidity.csv`}
+												/>
+											</div>
+										</div>
+									</motion.div>
+								</CardContent>
+							</Card>
 
-                      <div className="flex gap-2 mt-4">
-                        <ExportButton
-                          data={humidityData}
-                          filename={`${weather.city.name}_humidity.csv`}
-                        />
-                      </div>
-                    </div>
-                  </motion.div>
-                </CardContent>
-              </Card>
+							<Card className="shadow-lg">
+								<CardHeader>
+									<CardTitle className="text-2xl sm:text-3xl font-semibold">
+										Weather Map
+									</CardTitle>
+								</CardHeader>
+								<CardContent>
+									{mapData && (
+										<WeatherMap
+											center={{ lat: mapData.lat, lon: mapData.lon }}
+											temperature={mapData.temp}
+										/>
+									)}
+								</CardContent>
+							</Card>
 
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-2xl sm:text-3xl font-semibold">
-                    Weather Map
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {mapData && (
-                    <WeatherMap
-                      center={{ lat: mapData.lat, lon: mapData.lon }}
-                      temperature={mapData.temp}
-                    />
-                  )}
-                </CardContent>
-              </Card>
+							{aqi && <AiAssistantFab aqi={aqi.value} />}
+						</div>
+					)}
+				</div>
+			</div>
 
-              {aqi && <AiAssistantFab aqi={aqi.value} />}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <TransparentPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
-        <div className="space-y-6">
-          <h2 className="text-white text-2xl font-bold text-center">
-            Air Quality AI Assistant
-          </h2>
-          <p className="text-white text-opacity-80 text-center">
-            Ask about health impacts, safety measures, or pollution details
-          </p>
-          <AISearch
-            query=""
-            city={weather?.city?.name}
-            aqi={aqi?.value}
-            category={aqi?.category}
-            pollutant={aqi?.pollutant}
-            temp={weather?.list?.[0]?.main?.temp}
-            humidity={weather?.list?.[0]?.main?.humidity}
-          />
-        </div>
-      </TransparentPopup>
-    </motion.div>
-  );
+			<TransparentPopup
+				isOpen={isPopupOpen}
+				onClose={() => setIsPopupOpen(false)}
+			>
+				<div className="space-y-6">
+					<h2 className="text-white text-2xl font-bold text-center">
+						Air Quality AI Assistant
+					</h2>
+					<p className="text-white text-opacity-80 text-center">
+						Ask about health impacts, safety measures, or pollution details
+					</p>
+					<AISearch
+						query=""
+						city={weather?.city?.name}
+						aqi={aqi?.value}
+						category={aqi?.category}
+						pollutant={aqi?.pollutant}
+						temp={weather?.list?.[0]?.main?.temp}
+						humidity={weather?.list?.[0]?.main?.humidity}
+					/>
+				</div>
+			</TransparentPopup>
+		</motion.div>
+	);
 }
